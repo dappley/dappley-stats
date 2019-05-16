@@ -1,6 +1,14 @@
 <template>
-    <TransactionPool v-if="stats" :size="stats['dap.txPool.currSize']" :timeStamp="stats['lastResponseTimestamp']">
-    </TransactionPool>
+    <div>
+        <TransactionPool v-if="stats" :size="stats['dap.txPool.currSize']" :timeStamp="stats['lastResponseTimestamp']">
+        </TransactionPool>
+        <div v-else>
+            <div class="center">
+                <b-spinner style="width: 25vmin; height: 25vmin; border-width: 2.5vmin;" ></b-spinner>
+                <strong style="position: absolute; font-size: 2.5vmin;">Loading...</strong>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -38,4 +46,12 @@ export default {
 }
 </script>
 
-
+<style>
+    .center {
+        display: flex;
+        text-align: center;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
