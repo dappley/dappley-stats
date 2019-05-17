@@ -12,11 +12,16 @@
 </template>
 
 <script>
+    import {BCard, BCardText} from 'bootstrap-vue/es/components'
     export default {
         name: "TransactionPool",
         props: {
             size: Number,
             timeStamp: String
+        },
+        components: {
+            'b-card': BCard,
+            'b-card-text': BCardText
         }
     }
 </script>
