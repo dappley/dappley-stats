@@ -1,7 +1,7 @@
 <template>
     <div class="row m-3">
-        <b-card class="col m-3" :title="name">
-            <b-card-text>{{usedPercent}}</b-card-text>
+        <b-card v-if="attrs && attrs.cpu" class="col m-3" :title="name">
+            <b-card-text class="cpu-usage-percent">{{usedPercent}}</b-card-text>
         </b-card>
     </div>
 </template>
@@ -36,9 +36,10 @@
             usedPercent: {
                 get() {
                     let _ = this.attrs;
-                    let totalTime = _.user + _.idle + _.iowait + _.irq + _.nice + _.softirq + _.steal + _.system;
-                    let idleTime = _.idle + _.iowait;
-                    return Number((totalTime - idleTime) / totalTime * 100).toFixed(2) + " %";
+                    const totalTime = _.user + _.idle + _.iowait + _.irq + _.nice + _.softirq + _.steal + _.system;
+                    const idleTime = _.idle + _.iowait;
+                    const percent = Number((totalTime - idleTime) / totalTime * 100).toFixed(2);
+                    return isNaN(percent) ? "" : percent + " %";
                 }
             }
         }

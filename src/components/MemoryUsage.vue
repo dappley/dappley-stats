@@ -1,7 +1,7 @@
 <template>
     <div class="row m-3">
         <b-card class="col m-3" title="Memory Usage">
-            <b-card-text>{{usedPercent}}</b-card-text>
+            <b-card-text class="memory-usage-percent">{{usedPercent}}</b-card-text>
         </b-card>
     </div>
 </template>
@@ -26,7 +26,10 @@
         computed: {
             usedPercent: {
                 get() {
-                    return Number(this.stats.usedPercent).toFixed(2) + ' %';
+                    if (this.stats && this.stats.usedPercent)
+                        return Number(this.stats.usedPercent).toFixed(2) + " %";
+                    else
+                        return "";
                 }
             }
         }
