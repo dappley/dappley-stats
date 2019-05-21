@@ -2,7 +2,7 @@
 all:
 	@echo "Usage: make image|container|stop|clean|clean-all"
 
-CONTAINER_NAME=dapp
+CONTAINER_NAME=dappley-stats-client
 IMAGE_NAME=dappley-stats
 
 image: clean
@@ -10,7 +10,7 @@ image: clean
 	docker build -t ${IMAGE_NAME} -f Dockerfile .
 
 container: stop clean
-	docker run -d --name ${CONTAINER_NAME} -p 8081:8081 -t dappley-stats && \
+	docker run -d --name ${CONTAINER_NAME} -p 8081:8081 -t ${IMAGE_NAME} && \
 	docker exec -it ${CONTAINER_NAME} bash
 
 stop:
