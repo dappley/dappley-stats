@@ -1,7 +1,7 @@
 <template>
     <div class="row m-3">
-        <b-card class="col m-3" title="Memory Usage">
-            <b-card-text class="memory-usage-percent">{{usedPercent}}</b-card-text>
+        <b-card class="col m-3" title="Heap Usage (bytes)">
+            <b-card-text v-if="stats" style="font-size: 1.25em">{{stats.HeapInuse}}/{{stats.HeapSys}}</b-card-text>
         </b-card>
     </div>
 </template>
@@ -15,23 +15,11 @@
         },
         props: {
             stats: {
-                // # of bytes
-                total: Number,
-                available: Number,
-                used: Number,
-                free: Number,
-                usedPercent: Number
+                HeapSys: Number,
+                HeapInuse: Number
             }
         },
         computed: {
-            usedPercent: {
-                get() {
-                    if (this.stats && this.stats.usedPercent)
-                        return Number(this.stats.usedPercent).toFixed(2) + " %";
-                    else
-                        return "";
-                }
-            }
         }
     }
 </script>

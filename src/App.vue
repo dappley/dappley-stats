@@ -3,8 +3,8 @@
         <div v-if="stats">
             <transaction-pool :size="stats['dap.txPool.currSize']" :timeStamp="stats['lastResponseTimestamp']">
             </transaction-pool>
-            <memory-usage :stats="stats['memory.stats']"></memory-usage>
-            <cpu-usage :stats="stats['cpu.stats']"></cpu-usage>
+            <memory-usage :stats="stats['memstats']"></memory-usage>
+            <cpu-usage :percentage="stats['dapp.cpu.percent']"></cpu-usage>
         </div>
         <div v-else>
             <div class="center">

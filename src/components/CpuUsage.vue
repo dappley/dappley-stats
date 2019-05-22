@@ -1,22 +1,25 @@
 <template>
-    <div>
-        <ul style="list-style: none; padding: 0">
-            <li v-for="stat of stats" :key="stat.cpu">
-                <cpu-usage-item :attrs="stat"></cpu-usage-item>
-            </li>
-        </ul>
+    <div class="row m-3">
+        <b-card class="col m-3" title="CPU Usage">
+            <b-card-text style="font-size: 1.25em">{{percent}}</b-card-text>
+        </b-card>
     </div>
 </template>
 
 <script>
-    import CpuUsageItem from "./CpuUsageItem";
     export default {
         name: "CpuUsage",
         components: {
-            CpuUsageItem
         },
         props: {
-            stats: Array
+            percentage: Number
+        },
+        computed: {
+            percent: {
+                get() {
+                    return Number(this.percentage).toFixed(2) + " %";
+                }
+            }
         }
     }
 </script>
