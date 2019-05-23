@@ -1,7 +1,11 @@
 <template>
     <div>
-        <TransactionPool v-if="stats" :size="stats['dap.txPool.currSize']" :timeStamp="stats['lastResponseTimestamp']">
-        </TransactionPool>
+        <div v-if="stats">
+            <transaction-pool :size="stats['dap.txPool.currSize']" :timeStamp="stats['lastResponseTimestamp']">
+            </transaction-pool>
+            <memory-usage :stats="stats['memstats']"></memory-usage>
+            <cpu-usage :percentage="stats['dapp.cpu.percent']"></cpu-usage>
+        </div>
         <div v-else>
             <div class="center">
                 <b-spinner style="width: 25vmin; height: 25vmin; border-width: 2.5vmin;" ></b-spinner>
@@ -15,10 +19,14 @@
 import TransactionPool from "./components/TransactionPool.vue";
 import axios from 'axios';
 import config from '../config.json';
+import CpuUsage from "./components/CpuUsage";
+import MemoryUsage from "./components/MemoryUsage";
 
 export default {
     name: "App",
     components: {
+        MemoryUsage,
+        CpuUsage,
         TransactionPool
     },
     data() {
@@ -46,7 +54,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .center {
         display: flex;
         text-align: center;
