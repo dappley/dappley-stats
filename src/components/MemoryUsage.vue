@@ -1,7 +1,7 @@
 <template>
     <div class="row m-3">
         <b-card class="col m-3" title="Heap Usage (bytes)">
-            <b-card-text v-if="stats" style="font-size: 1.25em">{{stats.HeapInuse}}/{{stats.HeapSys}}</b-card-text>
+            <b-card-text class="memory-usage" v-if="stats" style="font-size: 1.25em">{{stats.HeapInuse}}/{{stats.HeapSys}}</b-card-text>
         </b-card>
     </div>
 </template>
@@ -18,8 +18,6 @@
                 HeapSys: Number,
                 HeapInuse: Number
             }
-        },
-        computed: {
         }
     }
 </script>
