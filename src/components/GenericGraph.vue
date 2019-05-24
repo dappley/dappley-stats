@@ -5,6 +5,7 @@
 <script>
     import ScatterChart from "./ScatterChart"
     import _ from "lodash"
+
     export default {
         name: "GenericGraph",
         components: {ScatterChart},
@@ -15,6 +16,8 @@
         data() {
             return {
                 defaultOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     showLines: true,
                     scales: {
                         yAxes: [{
@@ -36,6 +39,12 @@
                     },
                     legend: {
                         display: false
+                    },
+                    pan: {
+                        enabled: true
+                    },
+                    zoom: {
+                        enabled: true
                     }
                 }
             }

@@ -11,6 +11,7 @@
     import {BCard, BCardText} from 'bootstrap-vue/es/components'
     import Helper from "../js/Helper"
     import GenericGraph from "./GenericGraph";
+
     export default {
         name: "MemoryUsage",
         components: {
