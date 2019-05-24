@@ -1,10 +1,19 @@
 <template>
     <div>
         <div v-if="stats">
-            <transaction-pool :size="stats['dap.txPool.currSize']" :timeStamp="stats['lastResponseTimestamp']">
-            </transaction-pool>
-            <memory-usage :stats="stats['memstats']"></memory-usage>
-            <cpu-usage :percentage="stats['dapp.cpu.percent']"></cpu-usage>
+            <div class="row m-3">
+                <b-card class="col m-3" title="Last Response Time">
+                    <b-card-text>{{stats['lastResponseTimestamp']}}</b-card-text>
+                </b-card>
+            </div>
+            <div class="row m-3">
+                <transaction-pool class="col m-3" :size="stats['dap.txPool.currSize']"
+                                  :data="stats['stats']['metrics']['dapp.txpool.size']['stats']"></transaction-pool>
+                <memory-usage class="col m-3" :stats="stats['memstats']"
+                              :data="stats['stats']['metrics']['dapp.memstats']['stats']"></memory-usage>
+                <cpu-usage class="col m-3" :percentage="stats['dapp.cpu.percent']"
+                           :data="stats['stats']['metrics']['dapp.cpu.percent']['stats']"></cpu-usage>
+            </div>
         </div>
         <div v-else>
             <div class="center">
@@ -16,7 +25,7 @@
 </template>
 
 <script>
-import TransactionPool from "./components/TransactionPool.vue";
+import TransactionPool from "./components/TransactionPool";
 import axios from 'axios';
 import config from '../config.json';
 import CpuUsage from "./components/CpuUsage";
@@ -27,7 +36,7 @@ export default {
     components: {
         MemoryUsage,
         CpuUsage,
-        TransactionPool
+        TransactionPool,
     },
     data() {
         return { stats: null }
