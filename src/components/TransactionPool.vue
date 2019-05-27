@@ -1,7 +1,7 @@
 <template>
     <b-card class="transaction-pool" title="Transaction Pool Size">
         <b-card-text style="font-size: 1.5em;">{{size}}</b-card-text>
-        <generic-graph v-if="data" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
+        <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
     </b-card>
 </template>
 
@@ -19,7 +19,7 @@
         },
         props: {
             size: Number,
-            data: Array
+            graphData: Array
         },
         computed: {
             chartData: {
@@ -27,19 +27,12 @@
                     return {
                         datasets: [
                             {
-                                data: this.transformStats(),
+                                data: Helper.transformToChartJSData(this.graphData),
                                 pointRadius: 0
                             }
                         ]
                     }
                 }
-            }
-        },
-        methods: {
-            transformStats() {
-                return this.data.map(stat => {
-                    return {x: Helper.unixTimestampToDate(stat["timestamp"]), y: stat["value"]}
-                });
             }
         },
         data() {
@@ -50,15 +43,7 @@
                             scaleLabel: {
                                 labelString: 'Size'
                             }
-                        }],
-                        xAxes: [{
-                            scaleLabel: {
-                                labelString: 'Local Time'
-                            }
                         }]
-                    },
-                    legend: {
-                        display: false
                     }
                 }
             }

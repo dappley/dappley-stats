@@ -3,7 +3,7 @@
         <b-card-text class="memory-usage" v-if="stats" style="font-size: 1.25em">
             {{stats.HeapInuse}}/{{stats.HeapSys}}
         </b-card-text>
-        <generic-graph v-if="data" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
+        <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
     </b-card>
 </template>
 
@@ -23,14 +23,7 @@
                 HeapSys: Number,
                 HeapInuse: Number
             },
-            data: Array
-        },
-        methods: {
-            transformStats(key) {
-                return this.data.map(stat => {
-                    return {x: Helper.unixTimestampToDate(stat["timestamp"]), y: stat['value'][key]}
-                })
-            }
+            graphData: Array
         },
         computed: {
             chartData: {
@@ -39,12 +32,12 @@
                         datasets: [
                             {
                                 label: "Heap Used",
-                                data: this.transformStats("heapInUse"),
+                                data: Helper.transformToChartJSData(this.graphData, ["timestamp"], ["value", "heapInUse"]),
                                 pointRadius: 0
                             },
                             {
                                 label: "Heap Size",
-                                data: this.transformStats("heapSys"),
+                                data: Helper.transformToChartJSData(this.graphData, ["timestamp"], ["value", "heapSys"]),
                                 pointRadius: 0
                             }
                         ]
@@ -60,11 +53,6 @@
                             type: 'logarithmic',
                             scaleLabel: {
                                 labelString: 'Bytes'
-                            }
-                        }],
-                        xAxes: [{
-                            scaleLabel: {
-                                labelString: 'Local Time'
                             }
                         }]
                     },

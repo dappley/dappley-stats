@@ -9,15 +9,15 @@
             <div class="row m-3">
                 <transaction-pool class="col m-3"
                                   :size="stats['dap.txPool.currSize']"
-                                  :data="stats['stats']['metrics']['dapp.txpool.size']['stats']">
+                                  :graph-data="stats['stats']['metrics']['dapp.txpool.size']['stats']">
                 </transaction-pool>
                 <memory-usage class="col m-3"
                               :stats="stats['memstats']"
-                              :data="stats['stats']['metrics']['dapp.memstats']['stats']">
+                              :graph-data="stats['stats']['metrics']['dapp.memstats']['stats']">
                 </memory-usage>
                 <cpu-usage class="col m-3"
                            :percentage="stats['dapp.cpu.percent']"
-                           :data="stats['stats']['metrics']['dapp.cpu.percent']['stats']">
+                           :graph-data="stats['stats']['metrics']['dapp.cpu.percent']['stats']">
                 </cpu-usage>
             </div>
         </div>

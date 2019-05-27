@@ -33,7 +33,7 @@
                             type: 'time',
                             scaleLabel: {
                                 display: true,
-                                labelString: ''
+                                labelString: 'Local Time'
                             }
                         }]
                     },

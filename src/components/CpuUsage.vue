@@ -3,7 +3,7 @@
         <b-card-text class="cpu-usage-percent" v-if="percentage" style="font-size: 1.25em">
             {{percent}}
         </b-card-text>
-        <generic-graph v-if="data" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
+        <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
     </b-card>
 </template>
 
@@ -20,7 +20,7 @@
         },
         props: {
             percentage: Number,
-            data: Array
+            graphData: Array
         },
         computed: {
             percent: {
@@ -33,19 +33,12 @@
                     return {
                         datasets: [
                             {
-                                data: this.transformStats(),
+                                data: Helper.transformToChartJSData(this.graphData),
                                 pointRadius: 0
                             }
                         ]
                     }
                 }
-            }
-        },
-        methods: {
-            transformStats() {
-                return this.data.map(stat => {
-                    return {x: Helper.unixTimestampToDate(stat["timestamp"]), y: stat["value"]}
-                })
             }
         },
         data() {
@@ -55,11 +48,6 @@
                         yAxes: [{
                             scaleLabel: {
                                 labelString: 'Percentage'
-                            }
-                        }],
-                        xAxes: [{
-                            scaleLabel: {
-                                labelString: 'Local Time'
                             }
                         }]
                     }
