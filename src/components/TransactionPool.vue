@@ -1,27 +1,52 @@
 <template>
-    <div class="transaction-pool">
-        <div class="row m-3">
-            <b-card class="col m-3" title="Transaction Pool Size">
-                <b-card-text style="font-size: 1.5em;">{{size}}</b-card-text>
-            </b-card>
-            <b-card class="col m-3" title="Last Response Time">
-                <b-card-text>{{timeStamp}}</b-card-text>
-            </b-card>
-        </div>
-    </div>
+    <b-card class="transaction-pool" title="Transaction Pool Size">
+        <b-card-text style="font-size: 1.5em;">{{size}}</b-card-text>
+        <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
+    </b-card>
 </template>
 
 <script>
     import {BCard, BCardText} from 'bootstrap-vue/es/components'
+    import Helper from '../js/Helper'
+    import GenericGraph from "./GenericGraph";
+
     export default {
         name: "TransactionPool",
-        props: {
-            size: Number,
-            timeStamp: String
-        },
         components: {
+            GenericGraph,
             'b-card': BCard,
             'b-card-text': BCardText
+        },
+        props: {
+            size: Number,
+            graphData: Array
+        },
+        computed: {
+            chartData: {
+                get() {
+                    return {
+                        datasets: [
+                            {
+                                data: Helper.transformToChartJSData(this.graphData),
+                                pointRadius: 0
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        data() {
+            return {
+                customOptions: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                labelString: 'Number of Transactions'
+                            }
+                        }]
+                    }
+                }
+            }
         }
     }
 </script>

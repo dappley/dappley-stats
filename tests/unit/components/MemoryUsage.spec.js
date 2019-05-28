@@ -1,8 +1,7 @@
 import {shallowMount} from '@vue/test-utils'
-import MemoryUsage from '@/components/MemoryUsage.vue'
+import MemoryUsage from '../../../src/components/MemoryUsage.vue'
 
 describe("Memory Usage Component Test Suite", () => {
-
     it("Missing property", () => {
         const wrapper = shallowMount(MemoryUsage, {
             propsData: { }

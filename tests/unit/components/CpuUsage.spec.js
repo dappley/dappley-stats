@@ -2,7 +2,6 @@ import {shallowMount} from '@vue/test-utils'
 import CpuUsage from '@/components/CpuUsage.vue'
 
 describe("CPU Usage Component Test Suite", () => {
-
     it("Missing property", () => {
         const wrapper = shallowMount(CpuUsage, {
             propsData: { }
