@@ -41,7 +41,7 @@
                     scales: {
                         yAxes: [{
                             scaleLabel: {
-                                labelString: 'Size'
+                                labelString: 'Number of Transactions'
                             }
                         }]
                     }
