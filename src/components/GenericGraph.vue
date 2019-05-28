@@ -45,6 +45,11 @@
                     },
                     zoom: {
                         enabled: true
+                    },
+                    elements: {
+                        line: {
+                            tension: 0
+                        }
                     }
                 }
             }
