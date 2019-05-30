@@ -6,14 +6,13 @@ describe("Peers Component Test Suite", () => {
         const wrapper = await render(Peers, {
             peers : []
         });
-        expect(wrapper.find(".text-center").text()).toBe("No connected peers.");
+        expect(wrapper.find(".b-table-empty-row [role='alert']").text()).toBe("No connected peers.");
     });
 
     it("Should display the correct number of connected peers", async () => {
         const wrapper = await render(Peers, {
             peers: [
-                { ID: "id0", Addrs: [ "address" ] },
-                { ID: "id1", Addrs: null }
+                { ID: "id0", Addrs: [ "address" ] }
             ]
         });
         expect(wrapper.find(".peers-table-row").length).toEqual(1);
