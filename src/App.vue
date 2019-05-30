@@ -20,6 +20,9 @@
                            :graph-data="stats['stats']['metrics']['dapp.cpu.percent']['stats']">
                 </cpu-usage>
             </div>
+            <div class="row m-3">
+                <peers class="col" :peers="stats['peers']"></peers>
+            </div>
         </div>
         <div v-else>
             <div class="center">
@@ -36,10 +39,12 @@
     import config from '../config.json';
     import CpuUsage from "./components/CpuUsage";
     import MemoryUsage from "./components/MemoryUsage";
+    import Peers from "./components/Peers";
 
     export default {
         name: "App",
         components: {
+            Peers,
             MemoryUsage,
             CpuUsage,
             TransactionPool
