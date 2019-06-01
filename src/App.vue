@@ -57,7 +57,7 @@
                 axios.get(`http://${config.host}:${config.port}/debug/metrics`)
                     .then(stats => {
                         this.stats = stats.data;
-                        this.stats['lastResponseTimestamp'] = new Date().toUTCString();
+                        this.stats['lastResponseTimestamp'] = new Date()
                     })
                     .catch(err => {
                         // eslint-disable-next-line
