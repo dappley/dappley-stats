@@ -3,10 +3,14 @@
     <b-table class="text-center" bordered show-empty hover :items="peers" :fields="tableFields" :empty-text="noPeersText"
              tbodyTrClass="peers-table-row" style="font-size: 0.75em;">
         <template slot="id" slot-scope="data">
-            {{data.item.info.ID}}
+            {{data.item.peerInfo.ID}}
+        </template>
+        <template slot="latency" slot-scope="data">
+            <div v-if="data.item.latency">{{Number(data.item.latency).toFixed(3)}}</div>
+            <div v-else>&mdash;</div>
         </template>
         <template slot="addresses" slot-scope="data">
-            <b-list-group v-for="(value, key) in data.item.info.Addrs" :key="key">
+            <b-list-group v-for="(value, key) in data.item.peerInfo.Addrs" :key="key">
                 <b-list-group-item>{{value}}</b-list-group-item>
             </b-list-group>
         </template>
@@ -37,7 +41,8 @@
                     },
                     {
                         key: "latency",
-                        label: "Latency",
+                        label: "Latency (ms)",
+                        sortable: true,
                         thClass: "peers-table-header-latency"
                     },
                     {
