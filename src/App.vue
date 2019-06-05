@@ -19,6 +19,8 @@
                            :percentage="stats['dapp.cpu.percent']"
                            :graph-data="stats['stats']['metrics']['dapp.cpu.percent']['stats']">
                 </cpu-usage>
+                <fork-info class="col m-3" :graph-data="stats['stats']['metrics']['dapp.fork.info']['stats']">
+                </fork-info>
             </div>
             <div class="row m-3">
                 <peers class="col" :peers="stats['peers']"></peers>
@@ -40,10 +42,12 @@
     import CpuUsage from "./components/CpuUsage";
     import MemoryUsage from "./components/MemoryUsage";
     import Peers from "./components/Peers";
+    import ForkInfo from "./components/ForkInfo";
 
     export default {
         name: "App",
         components: {
+            ForkInfo,
             Peers,
             MemoryUsage,
             CpuUsage,
