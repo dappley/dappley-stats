@@ -3,14 +3,10 @@
         <div v-if="stats">
             <div class="row m-3">
                 <b-card class="col m-3" title="Last Response Time">
-                    <b-card-text>{{stats['lastResponseTimestamp']}}</b-card-text>
+                    <b-card-text>{{stats["lastResponseTimestamp"]}}</b-card-text>
                 </b-card>
             </div>
             <div class="row m-3">
-                <transaction-pool class="col m-3"
-                                  :size="stats['dap.txPool.currSize']"
-                                  :graph-data="stats['stats']['metrics']['dapp.txpool.size']['stats']">
-                </transaction-pool>
                 <memory-usage class="col m-3"
                               :stats="stats['memstats']"
                               :graph-data="stats['stats']['metrics']['dapp.memstats']['stats']">
@@ -19,8 +15,16 @@
                            :percentage="stats['dapp.cpu.percent']"
                            :graph-data="stats['stats']['metrics']['dapp.cpu.percent']['stats']">
                 </cpu-usage>
+            </div>
+            <div class="row m-3">
+                <transaction-pool class="col m-3"
+                                  :size="stats['dap.txPool.currSize']"
+                                  :graph-data="stats['stats']['metrics']['dapp.txpool.size']['stats']">
+                </transaction-pool>
                 <fork-info class="col m-3" :graph-data="stats['stats']['metrics']['dapp.fork.info']['stats']">
                 </fork-info>
+                <block-stats class="col m-3" :graph-data="stats['dapp.block.stats']">
+                </block-stats>
             </div>
             <div class="row m-3">
                 <peers class="col" :peers="stats['peers']"></peers>
@@ -37,16 +41,18 @@
 
 <script>
     import TransactionPool from "./components/TransactionPool";
-    import axios from 'axios';
-    import config from '../config.json';
+    import axios from "axios";
+    import config from "../config.json";
     import CpuUsage from "./components/CpuUsage";
     import MemoryUsage from "./components/MemoryUsage";
     import Peers from "./components/Peers";
     import ForkInfo from "./components/ForkInfo";
+    import BlockStats from "./components/BlockStats";
 
     export default {
         name: "App",
         components: {
+            BlockStats,
             ForkInfo,
             Peers,
             MemoryUsage,
@@ -54,19 +60,19 @@
             TransactionPool
         },
         data() {
-            return {stats: null}
+            return {stats: null};
         },
         methods: {
             fetchData() {
                 axios.get(`http://${config.host}:${config.port}/debug/metrics`)
                     .then(stats => {
                         this.stats = stats.data;
-                        this.stats['lastResponseTimestamp'] = new Date()
+                        this.stats["lastResponseTimestamp"] = new Date();
                     })
                     .catch(err => {
                         // eslint-disable-next-line
                         console.log(err);
-                    })
+                    });
             }
         },
         created() {
@@ -75,7 +81,7 @@
                 this.fetchData();
             }, config.pollingInterval);
         }
-    }
+    };
 </script>
 
 <style scoped>

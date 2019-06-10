@@ -8,9 +8,9 @@
 </template>
 
 <script>
-    import {BCard, BCardText} from 'bootstrap-vue/es/components'
-    import Helper from "../js/Helper"
-    import GenericGraph from "./GenericGraph"
+    import {BCard, BCardText} from "bootstrap-vue/es/components";
+    import Helper from "../js/Helper";
+    import GenericGraph from "./GenericGraph";
 
     export default {
         name: "CpuUsage",
@@ -37,7 +37,7 @@
                                 pointRadius: 0
                             }
                         ]
-                    }
+                    };
                 }
             }
         },
@@ -47,12 +47,12 @@
                     scales: {
                         yAxes: [{
                             scaleLabel: {
-                                labelString: 'Percentage'
+                                labelString: "Percentage"
                             }
                         }]
                     }
                 }
-            }
+            };
         }
-    }
+    };
 </script>
