@@ -25,7 +25,7 @@
             currentLongestFork: {
                 get() {
                     if (this.graphData && this.graphData.length > 0)
-                        return last(this.graphData)['value']['numForks'];
+                        return last(this.graphData)['value']['longestFork'];
                     else
                         return null
                 }
