@@ -1,5 +1,5 @@
 <template>
-    <b-card v-if="chartData" title="Transactions Per Block">
+    <b-card v-if="graphData" title="Transactions Per Block">
         <bar-chart :chart-data="chartData" :options="options"></bar-chart>
     </b-card>
 </template>
@@ -11,19 +11,16 @@
         name: "BlockStats",
         components: {BarChart},
         props: {
-            graphData: {
-                NumTxPerBlock: Array,
-                BlockHeights: Array
-            }
+            graphData: Array
         },
         computed: {
             chartData: {
                 get() {
                     return {
-                        labels: this.graphData.BlockHeights,
+                        labels: this.graphData.map((stat) => stat["Height"]),
                         datasets: [
                             {
-                                data: this.graphData.NumTxPerBlock
+                                data: this.graphData.map((stat) => stat["NumTransactions"])
                             }
                         ]
                     };
