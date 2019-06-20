@@ -3,8 +3,8 @@
 </template>
 
 <script>
-    import ScatterChart from "./ScatterChart"
-    import _ from "lodash"
+    import ScatterChart from "./ScatterChart";
+    import _ from "lodash";
 
     export default {
         name: "GenericGraph",
@@ -20,22 +20,26 @@
                     maintainAspectRatio: false,
                     showLines: true,
                     scales: {
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: ''
-                            },
-                            ticks: {
-                                beginAtZero: true
+                        yAxes: [
+                            {
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: ""
+                                },
+                                ticks: {
+                                    beginAtZero: true
+                                }
                             }
-                        }],
-                        xAxes: [{
-                            type: 'time',
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Local Time'
+                        ],
+                        xAxes: [
+                            {
+                                type: "time",
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "Local Time"
+                                }
                             }
-                        }]
+                        ]
                     },
                     legend: {
                         display: false
@@ -52,7 +56,7 @@
                         }
                     }
                 }
-            }
+            };
         },
         computed: {
             options: {
@@ -61,5 +65,5 @@
                 }
             }
         }
-    }
+    };
 </script>
