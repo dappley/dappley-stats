@@ -6,10 +6,11 @@
 
 <script>
     import BarChart from "./BarChart";
+    import {BCard} from "bootstrap-vue/es/components";
 
     export default {
         name: "BlockStats",
-        components: {BarChart},
+        components: {BCard, BarChart},
         props: {
             graphData: Array
         },
