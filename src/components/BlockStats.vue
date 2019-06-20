@@ -1,5 +1,5 @@
 <template>
-    <b-card v-if="graphData" title="Transactions Per Block">
+    <b-card v-if="graphData" title="Transactions Processed">
         <bar-chart :chart-data="chartData" :options="options"></bar-chart>
     </b-card>
 </template>
