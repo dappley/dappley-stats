@@ -7,12 +7,12 @@ describe("BlockStats Component Test Suite", () => {
             propsData: {
                 graphData: [
                     {
-                        NumTransactions: 0,
-                        Height: 1
+                        numTransactions: 0,
+                        height: 1
                     },
                     {
-                        NumTransactions: 1,
-                        Height: 2
+                        numTransactions: 1,
+                        height: 2
                     }
                 ]
             }

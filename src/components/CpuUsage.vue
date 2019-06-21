@@ -1,6 +1,6 @@
 <template>
     <b-card title="CPU Usage">
-        <b-card-text class="cpu-usage-percent" v-if="percentage" style="font-size: 1.25em">
+        <b-card-text class="cpu-usage-percent" v-if="percent !== undefined" style="font-size: 1.25em">
             {{percent}}
         </b-card-text>
         <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
@@ -19,13 +19,12 @@
             BCard, BCardText
         },
         props: {
-            percentage: Number,
             graphData: Array
         },
         computed: {
             percent: {
                 get() {
-                    return Number(this.percentage).toFixed(2) + " %";
+                    return Helper.mapLast(this.graphData, (last) => last["value"].toFixed(2) + " %");
                 }
             },
             chartData: {

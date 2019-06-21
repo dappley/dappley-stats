@@ -1,6 +1,6 @@
 <template>
     <b-card v-if="graphData" title="Fork Statistics">
-        <b-card-text v-if="currentLongestFork != null" class="fork-info" style="font-size: 1.25em">
+        <b-card-text v-if="currentLongestFork !== undefined" class="fork-info" style="font-size: 1.25em">
             Current Longest Fork: {{currentLongestFork}}
         </b-card-text>
         <generic-graph :chart-data="chartData" :custom-options="customOptions"></generic-graph>
@@ -8,7 +8,6 @@
 </template>
 
 <script>
-    import {last} from 'lodash';
     import GenericGraph from './GenericGraph'
     import Helper from '../js/Helper'
     import {BCard, BCardText} from 'bootstrap-vue/es/components'
@@ -24,10 +23,7 @@
         computed: {
             currentLongestFork: {
                 get() {
-                    if (this.graphData && this.graphData.length > 0)
-                        return last(this.graphData)['value']['longestFork'];
-                    else
-                        return null
+                    return Helper.mapLast(this.graphData, (last) => last["value"]["longestFork"]);
                 }
             },
             chartData: {

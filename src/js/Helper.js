@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import _ from "lodash";
+
 export default class Helper {
     /**
      *
@@ -16,9 +17,23 @@ export default class Helper {
      * @param yKeys keys required to find y value in a data object
      * @returns {Array} of 2d coordinates to be plotted on chart.js graph
      */
-    static transformToChartJSData(data, xKeys=["timestamp"], yKeys=["value"]) {
-        return data.map( (stat) => {
-            return { x: this.unixTimestampToDate(_.get(stat, xKeys)), y: _.get(stat, yKeys) }
-        })
+    static transformToChartJSData(data, xKeys = ["timestamp"], yKeys = ["value"]) {
+        return data.map((stat) => {
+            return {x: this.unixTimestampToDate(_.get(stat, xKeys)), y: _.get(stat, yKeys)};
+        });
+    }
+
+
+    /**
+     *
+     * @param array
+     * @param fn
+     * @returns {undefined|*} Applies fn to the last element of array and returns the result
+     */
+    static mapLast(array, fn) {
+        if (array && array.length > 0) {
+            return fn(array[array.length - 1]);
+        }
+        return undefined;
     }
 }

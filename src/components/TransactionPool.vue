@@ -1,6 +1,6 @@
 <template>
     <b-card class="transaction-pool" title="Transaction Pool Size">
-        <b-card-text style="font-size: 1.5em;">{{size}}</b-card-text>
+        <b-card-text v-if="size !== undefined" style="font-size: 1.5em;">{{size}}</b-card-text>
         <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
     </b-card>
 </template>
@@ -18,7 +18,6 @@
             'b-card-text': BCardText
         },
         props: {
-            size: Number,
             graphData: Array
         },
         computed: {
@@ -32,6 +31,11 @@
                             }
                         ]
                     }
+                }
+            },
+            size: {
+                get() {
+                    return Helper.mapLast(this.graphData, (last) => last["value"]);
                 }
             }
         },

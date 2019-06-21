@@ -1,7 +1,7 @@
 <template>
     <b-card title="Heap Usage (bytes)">
-        <b-card-text class="memory-usage" v-if="stats" style="font-size: 1.25em">
-            {{stats.HeapInuse}}/{{stats.HeapSys}}
+        <b-card-text class="memory-usage" v-if="heapInUse !== undefined && heapSys !== undefined" style="font-size: 1.25em">
+            {{heapInUse}}/{{heapSys}}
         </b-card-text>
         <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
     </b-card>
@@ -19,10 +19,6 @@
             BCard, BCardText
         },
         props: {
-            stats: {
-                HeapSys: Number,
-                HeapInuse: Number
-            },
             graphData: Array
         },
         computed: {
@@ -42,6 +38,16 @@
                             }
                         ]
                     }
+                }
+            },
+            heapInUse: {
+                get() {
+                    return Helper.mapLast(this.graphData, (last) => last["value"]["heapInUse"])
+                }
+            },
+            heapSys: {
+                get() {
+                    return Helper.mapLast(this.graphData, (last) => last["value"]["heapSys"])
                 }
             }
         },
