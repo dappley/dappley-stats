@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore generated configuration files
+docker/
+!docker/.gitignore
+docker-compose.yml
+config.json
