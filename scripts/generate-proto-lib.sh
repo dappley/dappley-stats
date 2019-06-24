@@ -17,7 +17,8 @@ ${PROTO_PATH}/rpc/pb/rpc.proto
 ${PROTO_PATH}/core/pb/block.proto
 ${PROTO_PATH}/core/pb/transaction.proto
 ${PROTO_PATH}/core/pb/utxo.proto
-${PROTO_PATH}/network/pb/peer.proto)
+${PROTO_PATH}/network/pb/peer.proto
+${PROTO_PATH}/metrics/pb/datastore.proto)
 
 [[ ! -d ${PROTO_PATH_BASE} ]] || (echo "Failed to generate proto files, ${PROTO_PATH_BASE} directory already exists." && exit 1)
 mkdir -p ${PROTO_PATH}

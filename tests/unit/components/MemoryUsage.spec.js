@@ -1,5 +1,6 @@
 import {shallowMount} from "@vue/test-utils";
 import MemoryUsage from "../../../src/components/MemoryUsage.vue";
+import TestHelper from "../TestHelper";
 
 describe("Memory Usage Component Test Suite", () => {
     it("Missing property", () => {
@@ -12,7 +13,7 @@ describe("Memory Usage Component Test Suite", () => {
 
     it("Sanity test", () => {
         const wrapper = shallowMount(MemoryUsage, {
-            propsData: {graphData: [{value: {heapInUse: 1, heapSys: 2}}]}
+            propsData: {graphData: [TestHelper.NewMemStat(0, 1, 2)]}
         });
         expect(wrapper.find(".memory-usage").text()).toBe("1/2");
     });

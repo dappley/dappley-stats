@@ -8,9 +8,9 @@
 </template>
 
 <script>
-    import GenericGraph from './GenericGraph'
-    import Helper from '../js/Helper'
-    import {BCard, BCardText} from 'bootstrap-vue/es/components'
+    import GenericGraph from "./GenericGraph";
+    import Helper from "../js/Helper";
+    import {BCard, BCardText} from "bootstrap-vue/es/components";
 
     export default {
         name: "ForkInfo",
@@ -23,7 +23,7 @@
         computed: {
             currentLongestFork: {
                 get() {
-                    return Helper.mapLast(this.graphData, (last) => last["value"]["longestFork"]);
+                    return Helper.mapLast(this.graphData, (last) => last.getForkStats().getLongestFork());
                 }
             },
             chartData: {
@@ -32,16 +32,26 @@
                         datasets: [
                             {
                                 label: "Fork Count",
-                                data: Helper.transformToChartJSData(this.graphData, ["timestamp"], ["value", "numForks"]),
+                                data: this.graphData.map((v) => {
+                                    return {
+                                        x: Helper.unixTimestampToDate(v.getTimestamp()),
+                                        y: v.getForkStats().getNumForks()
+                                    };
+                                }),
                                 pointRadius: 0
                             },
                             {
                                 label: "Longest Fork",
-                                data: Helper.transformToChartJSData(this.graphData, ["timestamp"], ["value", "longestFork"]),
+                                data: this.graphData.map((v) => {
+                                    return {
+                                        x: Helper.unixTimestampToDate(v.getTimestamp()),
+                                        y: v.getForkStats().getLongestFork()
+                                    };
+                                }),
                                 pointRadius: 0
                             }
                         ]
-                    }
+                    };
                 }
             }
         },
@@ -52,7 +62,7 @@
                         display: true
                     }
                 }
-            }
+            };
         }
-    }
+    };
 </script>

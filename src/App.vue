@@ -3,28 +3,29 @@
         <div v-if="stats">
             <div class="row m-3">
                 <b-card class="col m-3" title="Last Response Time">
-                    <b-card-text>{{stats["lastResponseTimestamp"]}}</b-card-text>
+                    <b-card-text>{{this.lastResponseTime}}</b-card-text>
                 </b-card>
             </div>
             <div class="row m-3">
                 <memory-usage class="col m-3"
-                              :graph-data="stats['timeSeriesData']['metrics']['dapp.memstats']['stats']">
+                              :graph-data="stats.getDataStore().getMetricsMap().get('dapp.memstats').getStatsList()">
                 </memory-usage>
                 <cpu-usage class="col m-3"
-                           :graph-data="stats['timeSeriesData']['metrics']['dapp.cpu.percent']['stats']">
+                           :graph-data="stats.getDataStore().getMetricsMap().get('dapp.cpu.percent').getStatsList()">
                 </cpu-usage>
             </div>
             <div class="row m-3">
                 <transaction-pool class="col m-3"
-                                  :graph-data="stats['timeSeriesData']['metrics']['dapp.txpool.size']['stats']">
+                                  :graph-data="stats.getDataStore().getMetricsMap().get('dapp.txpool.size').getStatsList()">
                 </transaction-pool>
-                <fork-info class="col m-3" :graph-data="stats['timeSeriesData']['metrics']['dapp.fork.info']['stats']">
+                <fork-info class="col m-3"
+                           :graph-data="stats.getDataStore().getMetricsMap().get('dapp.fork.info').getStatsList()">
                 </fork-info>
-                <block-stats class="col m-3" :graph-data="stats['blockStats']">
+                <block-stats class="col m-3" :graph-data="stats.getBlockStatsList()">
                 </block-stats>
             </div>
             <div class="row m-3">
-                <peers class="col" :peers="stats['peers']"></peers>
+                <peers class="col" :peers="stats.getPeersList()"></peers>
             </div>
         </div>
         <div v-else>
@@ -60,6 +61,7 @@
         data() {
             return {
                 stats: null,
+                lastResponseTime: null,
                 metricServiceClient: new MetricServicePromiseClient(`http://${config.host}:${config.port}`, null, null)
             };
         },
@@ -67,8 +69,8 @@
             getStats() {
                 this.metricServiceClient.rpcGetStats(new MetricsServiceRequest(), {})
                     .then(resp => {
-                        this.stats = JSON.parse(resp.getJson());
-                        this.stats["lastResponseTimestamp"] = new Date();
+                        this.stats = resp.getStats();
+                        this.lastResponseTime = new Date();
                     })
                     .catch(err => {
                         // eslint-disable-next-line

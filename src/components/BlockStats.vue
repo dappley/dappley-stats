@@ -18,10 +18,10 @@
             chartData: {
                 get() {
                     return {
-                        labels: this.graphData.map((stat) => stat["height"]),
+                        labels: this.graphData.map((stat) => stat.getHeight()),
                         datasets: [
                             {
-                                data: this.graphData.map((stat) => stat["numTransactions"])
+                                data: this.graphData.map((stat) => stat.getNumTransactions())
                             }
                         ]
                     };

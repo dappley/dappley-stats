@@ -24,7 +24,7 @@
         computed: {
             percent: {
                 get() {
-                    return Helper.mapLast(this.graphData, (last) => last["value"].toFixed(2) + " %");
+                    return Helper.mapLast(this.graphData, (last) => last.getCpuPercentage().toFixed(2) + " %");
                 }
             },
             chartData: {
@@ -32,7 +32,12 @@
                     return {
                         datasets: [
                             {
-                                data: Helper.transformToChartJSData(this.graphData),
+                                data: this.graphData.map((v) => {
+                                    return {
+                                        x: Helper.unixTimestampToDate(v.getTimestamp()),
+                                        y: v.getCpuPercentage()
+                                    };
+                                }),
                                 pointRadius: 0
                             }
                         ]
