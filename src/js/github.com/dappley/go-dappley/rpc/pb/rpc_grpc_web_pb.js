@@ -19,6 +19,8 @@ var github_com_dappley_go$dappley_core_pb_transaction_pb = require('../../../../
 var github_com_dappley_go$dappley_core_pb_utxo_pb = require('../../../../../github.com/dappley/go-dappley/core/pb/utxo_pb.js')
 
 var github_com_dappley_go$dappley_network_pb_peer_pb = require('../../../../../github.com/dappley/go-dappley/network/pb/peer_pb.js')
+
+var github_com_dappley_go$dappley_metrics_pb_datastore_pb = require('../../../../../github.com/dappley/go-dappley/metrics/pb/datastore_pb.js')
 const proto = {};
 proto.rpcpb = require('./rpc_pb.js');
 
@@ -1222,15 +1224,15 @@ proto.rpcpb.MetricServicePromiseClient =
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
  *   !proto.rpcpb.MetricsServiceRequest,
- *   !proto.rpcpb.JSONResponse>}
+ *   !proto.rpcpb.GetStatsResponse>}
  */
 const methodInfo_MetricService_RpcGetStats = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.rpcpb.JSONResponse,
+  proto.rpcpb.GetStatsResponse,
   /** @param {!proto.rpcpb.MetricsServiceRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.rpcpb.JSONResponse.deserializeBinary
+  proto.rpcpb.GetStatsResponse.deserializeBinary
 );
 
 
@@ -1239,9 +1241,9 @@ const methodInfo_MetricService_RpcGetStats = new grpc.web.AbstractClientBase.Met
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.rpcpb.JSONResponse)}
+ * @param {function(?grpc.web.Error, ?proto.rpcpb.GetStatsResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.rpcpb.JSONResponse>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.rpcpb.GetStatsResponse>|undefined}
  *     The XHR Node Readable Stream
  */
 proto.rpcpb.MetricServiceClient.prototype.rpcGetStats =
@@ -1260,7 +1262,7 @@ proto.rpcpb.MetricServiceClient.prototype.rpcGetStats =
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.rpcpb.JSONResponse>}
+ * @return {!Promise<!proto.rpcpb.GetStatsResponse>}
  *     A native promise that resolves to the response
  */
 proto.rpcpb.MetricServicePromiseClient.prototype.rpcGetStats =

@@ -19,6 +19,8 @@ var github_com_dappley_go$dappley_core_pb_utxo_pb = require('../../../../../gith
 goog.object.extend(proto, github_com_dappley_go$dappley_core_pb_utxo_pb);
 var github_com_dappley_go$dappley_network_pb_peer_pb = require('../../../../../github.com/dappley/go-dappley/network/pb/peer_pb.js');
 goog.object.extend(proto, github_com_dappley_go$dappley_network_pb_peer_pb);
+var github_com_dappley_go$dappley_metrics_pb_datastore_pb = require('../../../../../github.com/dappley/go-dappley/metrics/pb/datastore_pb.js');
+goog.object.extend(proto, github_com_dappley_go$dappley_metrics_pb_datastore_pb);
 goog.exportSymbol('proto.rpcpb.AddPeerRequest', null, global);
 goog.exportSymbol('proto.rpcpb.AddPeerResponse', null, global);
 goog.exportSymbol('proto.rpcpb.AddProducerRequest', null, global);
@@ -40,11 +42,11 @@ goog.exportSymbol('proto.rpcpb.GetNewTransactionRequest', null, global);
 goog.exportSymbol('proto.rpcpb.GetNewTransactionResponse', null, global);
 goog.exportSymbol('proto.rpcpb.GetPeerInfoRequest', null, global);
 goog.exportSymbol('proto.rpcpb.GetPeerInfoResponse', null, global);
+goog.exportSymbol('proto.rpcpb.GetStatsResponse', null, global);
 goog.exportSymbol('proto.rpcpb.GetUTXORequest', null, global);
 goog.exportSymbol('proto.rpcpb.GetUTXOResponse', null, global);
 goog.exportSymbol('proto.rpcpb.GetVersionRequest', null, global);
 goog.exportSymbol('proto.rpcpb.GetVersionResponse', null, global);
-goog.exportSymbol('proto.rpcpb.JSONResponse', null, global);
 goog.exportSymbol('proto.rpcpb.MetricsServiceRequest', null, global);
 goog.exportSymbol('proto.rpcpb.SendBatchTransactionRequest', null, global);
 goog.exportSymbol('proto.rpcpb.SendBatchTransactionResponse', null, global);
@@ -888,16 +890,16 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.rpcpb.JSONResponse = function(opt_data) {
+proto.rpcpb.GetStatsResponse = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.rpcpb.JSONResponse, jspb.Message);
+goog.inherits(proto.rpcpb.GetStatsResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.rpcpb.JSONResponse.displayName = 'proto.rpcpb.JSONResponse';
+  proto.rpcpb.GetStatsResponse.displayName = 'proto.rpcpb.GetStatsResponse';
 }
 
 
@@ -6368,8 +6370,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     for transitional soy proto support: http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.rpcpb.JSONResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.rpcpb.JSONResponse.toObject(opt_includeInstance, this);
+proto.rpcpb.GetStatsResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.rpcpb.GetStatsResponse.toObject(opt_includeInstance, this);
 };
 
 
@@ -6378,13 +6380,13 @@ proto.rpcpb.JSONResponse.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Whether to include the JSPB
  *     instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.rpcpb.JSONResponse} msg The msg instance to transform.
+ * @param {!proto.rpcpb.GetStatsResponse} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.rpcpb.JSONResponse.toObject = function(includeInstance, msg) {
+proto.rpcpb.GetStatsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    json: jspb.Message.getFieldWithDefault(msg, 1, "")
+    stats: (f = msg.getStats()) && github_com_dappley_go$dappley_metrics_pb_datastore_pb.Metrics.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -6398,23 +6400,23 @@ proto.rpcpb.JSONResponse.toObject = function(includeInstance, msg) {
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.rpcpb.JSONResponse}
+ * @return {!proto.rpcpb.GetStatsResponse}
  */
-proto.rpcpb.JSONResponse.deserializeBinary = function(bytes) {
+proto.rpcpb.GetStatsResponse.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.rpcpb.JSONResponse;
-  return proto.rpcpb.JSONResponse.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.rpcpb.GetStatsResponse;
+  return proto.rpcpb.GetStatsResponse.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.rpcpb.JSONResponse} msg The message object to deserialize into.
+ * @param {!proto.rpcpb.GetStatsResponse} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.rpcpb.JSONResponse}
+ * @return {!proto.rpcpb.GetStatsResponse}
  */
-proto.rpcpb.JSONResponse.deserializeBinaryFromReader = function(msg, reader) {
+proto.rpcpb.GetStatsResponse.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -6422,8 +6424,9 @@ proto.rpcpb.JSONResponse.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setJson(value);
+      var value = new github_com_dappley_go$dappley_metrics_pb_datastore_pb.Metrics;
+      reader.readMessage(value,github_com_dappley_go$dappley_metrics_pb_datastore_pb.Metrics.deserializeBinaryFromReader);
+      msg.setStats(value);
       break;
     default:
       reader.skipField();
@@ -6438,9 +6441,9 @@ proto.rpcpb.JSONResponse.deserializeBinaryFromReader = function(msg, reader) {
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.rpcpb.JSONResponse.prototype.serializeBinary = function() {
+proto.rpcpb.GetStatsResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.rpcpb.JSONResponse.serializeBinaryToWriter(this, writer);
+  proto.rpcpb.GetStatsResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -6448,34 +6451,53 @@ proto.rpcpb.JSONResponse.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.rpcpb.JSONResponse} message
+ * @param {!proto.rpcpb.GetStatsResponse} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.rpcpb.JSONResponse.serializeBinaryToWriter = function(message, writer) {
+proto.rpcpb.GetStatsResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getJson();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getStats();
+  if (f != null) {
+    writer.writeMessage(
       1,
-      f
+      f,
+      github_com_dappley_go$dappley_metrics_pb_datastore_pb.Metrics.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional string json = 1;
- * @return {string}
+ * optional metricspb.Metrics stats = 1;
+ * @return {?proto.metricspb.Metrics}
  */
-proto.rpcpb.JSONResponse.prototype.getJson = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+proto.rpcpb.GetStatsResponse.prototype.getStats = function() {
+  return /** @type{?proto.metricspb.Metrics} */ (
+    jspb.Message.getWrapperField(this, github_com_dappley_go$dappley_metrics_pb_datastore_pb.Metrics, 1));
 };
 
 
-/** @param {string} value */
-proto.rpcpb.JSONResponse.prototype.setJson = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+/** @param {?proto.metricspb.Metrics|undefined} value */
+proto.rpcpb.GetStatsResponse.prototype.setStats = function(value) {
+  jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ */
+proto.rpcpb.GetStatsResponse.prototype.clearStats = function() {
+  this.setStats(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rpcpb.GetStatsResponse.prototype.hasStats = function() {
+  return jspb.Message.getField(this, 1) != null;
 };
 
 

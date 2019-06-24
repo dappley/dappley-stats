@@ -23,7 +23,7 @@ goog.exportSymbol('proto.networkpb.PeerInfo', null, global);
  * @constructor
  */
 proto.networkpb.PeerInfo = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.networkpb.PeerInfo.repeatedFields_, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.networkpb.PeerInfo.repeatedFields_, proto.networkpb.PeerInfo.oneofGroups_);
 };
 goog.inherits(proto.networkpb.PeerInfo, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -40,6 +40,31 @@ if (goog.DEBUG && !COMPILED) {
  * @const
  */
 proto.networkpb.PeerInfo.repeatedFields_ = [2];
+
+/**
+ * Oneof group definitions for this message. Each group defines the field
+ * numbers belonging to that group. When of these fields' value is set, all
+ * other fields in the group are cleared. During deserialization, if multiple
+ * fields are encountered for a group, only the last value seen will be kept.
+ * @private {!Array<!Array<number>>}
+ * @const
+ */
+proto.networkpb.PeerInfo.oneofGroups_ = [[3]];
+
+/**
+ * @enum {number}
+ */
+proto.networkpb.PeerInfo.OptionalValueCase = {
+  OPTIONAL_VALUE_NOT_SET: 0,
+  LATENCY: 3
+};
+
+/**
+ * @return {proto.networkpb.PeerInfo.OptionalValueCase}
+ */
+proto.networkpb.PeerInfo.prototype.getOptionalValueCase = function() {
+  return /** @type {proto.networkpb.PeerInfo.OptionalValueCase} */(jspb.Message.computeOneofCase(this, proto.networkpb.PeerInfo.oneofGroups_[0]));
+};
 
 
 
@@ -71,7 +96,8 @@ proto.networkpb.PeerInfo.prototype.toObject = function(opt_includeInstance) {
 proto.networkpb.PeerInfo.toObject = function(includeInstance, msg) {
   var f, obj = {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    addressList: jspb.Message.getRepeatedField(msg, 2)
+    addressList: jspb.Message.getRepeatedField(msg, 2),
+    latency: +jspb.Message.getFieldWithDefault(msg, 3, 0.0)
   };
 
   if (includeInstance) {
@@ -116,6 +142,10 @@ proto.networkpb.PeerInfo.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.addAddress(value);
       break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setLatency(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -156,6 +186,13 @@ proto.networkpb.PeerInfo.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeRepeatedString(
       2,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeDouble(
+      3,
       f
     );
   }
@@ -206,6 +243,38 @@ proto.networkpb.PeerInfo.prototype.addAddress = function(value, opt_index) {
  */
 proto.networkpb.PeerInfo.prototype.clearAddressList = function() {
   this.setAddressList([]);
+};
+
+
+/**
+ * optional double latency = 3;
+ * @return {number}
+ */
+proto.networkpb.PeerInfo.prototype.getLatency = function() {
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 3, 0.0));
+};
+
+
+/** @param {number} value */
+proto.networkpb.PeerInfo.prototype.setLatency = function(value) {
+  jspb.Message.setOneofField(this, 3, proto.networkpb.PeerInfo.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ */
+proto.networkpb.PeerInfo.prototype.clearLatency = function() {
+  jspb.Message.setOneofField(this, 3, proto.networkpb.PeerInfo.oneofGroups_[0], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.networkpb.PeerInfo.prototype.hasLatency = function() {
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
