@@ -1,5 +1,5 @@
 import {PeerInfo} from "../../src/js/github.com/dappley/go-dappley/network/pb/peer_pb";
-import {MemoryStats, Stat, NumForks, BlockStats} from "../../src/js/github.com/dappley/go-dappley/metrics/pb/datastore_pb";
+import {MemoryStats, Stat, ForkStats, BlockStats} from "../../src/js/github.com/dappley/go-dappley/metrics/pb/datastore_pb";
 
 export default class TestHelper {
     static NewPeerInfo(id, addresses, latency) {
@@ -22,7 +22,7 @@ export default class TestHelper {
 
     static NewForkStat(timestamp, longestFork, numForks) {
         const stat = new Stat();
-        const forkstat = new NumForks();
+        const forkstat = new ForkStats();
         stat.setTimestamp(timestamp);
         forkstat.setLongestFork(longestFork);
         forkstat.setNumForks(numForks);
