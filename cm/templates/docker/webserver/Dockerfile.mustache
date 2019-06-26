@@ -1,0 +1,6 @@
+FROM nginx
+
+COPY dist/ /var/www/html/
+COPY docker/webserver/nginx.conf /etc/nginx/nginx.conf
+EXPOSE {{WEB_SERVER_PORT}}
+CMD ["nginx", "-g", "daemon off;"]

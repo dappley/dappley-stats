@@ -3,31 +3,29 @@
         <div v-if="stats">
             <div class="row m-3">
                 <b-card class="col m-3" title="Last Response Time">
-                    <b-card-text>{{stats["lastResponseTimestamp"]}}</b-card-text>
+                    <b-card-text>{{this.lastResponseTime}}</b-card-text>
                 </b-card>
             </div>
             <div class="row m-3">
                 <memory-usage class="col m-3"
-                              :stats="stats['memstats']"
-                              :graph-data="stats['stats']['metrics']['dapp.memstats']['stats']">
+                              :graph-data="stats.getDataStore().getMetricsMap().get('dapp.memstats').getStatsList()">
                 </memory-usage>
                 <cpu-usage class="col m-3"
-                           :percentage="stats['dapp.cpu.percent']"
-                           :graph-data="stats['stats']['metrics']['dapp.cpu.percent']['stats']">
+                           :graph-data="stats.getDataStore().getMetricsMap().get('dapp.cpu.percent').getStatsList()">
                 </cpu-usage>
             </div>
             <div class="row m-3">
                 <transaction-pool class="col m-3"
-                                  :size="stats['dap.txPool.currSize']"
-                                  :graph-data="stats['stats']['metrics']['dapp.txpool.size']['stats']">
+                                  :graph-data="stats.getDataStore().getMetricsMap().get('dapp.txpool.size').getStatsList()">
                 </transaction-pool>
-                <fork-info class="col m-3" :graph-data="stats['stats']['metrics']['dapp.fork.info']['stats']">
+                <fork-info class="col m-3"
+                           :graph-data="stats.getDataStore().getMetricsMap().get('dapp.fork.info').getStatsList()">
                 </fork-info>
-                <block-stats class="col m-3" :graph-data="stats['dapp.block.stats']">
+                <block-stats class="col m-3" :graph-data="stats.getBlockStatsList()">
                 </block-stats>
             </div>
             <div class="row m-3">
-                <peers class="col" :peers="stats['peers']"></peers>
+                <peers class="col" :peers="stats.getPeersList()"></peers>
             </div>
         </div>
         <div v-else>
@@ -41,13 +39,14 @@
 
 <script>
     import TransactionPool from "./components/TransactionPool";
-    import axios from "axios";
     import config from "../config.json";
     import CpuUsage from "./components/CpuUsage";
     import MemoryUsage from "./components/MemoryUsage";
     import Peers from "./components/Peers";
     import ForkInfo from "./components/ForkInfo";
     import BlockStats from "./components/BlockStats";
+    import {MetricServicePromiseClient} from "./js/github.com/dappley/go-dappley/rpc/pb/rpc_grpc_web_pb";
+    import {MetricsServiceRequest} from "./js/github.com/dappley/go-dappley/rpc/pb/rpc_pb";
 
     export default {
         name: "App",
@@ -60,25 +59,29 @@
             TransactionPool
         },
         data() {
-            return {stats: null};
+            return {
+                stats: null,
+                lastResponseTime: null,
+                metricServiceClient: new MetricServicePromiseClient(`http://${config.host}:${config.port}`, null, null)
+            };
         },
         methods: {
-            fetchData() {
-                axios.get(`http://${config.host}:${config.port}/debug/metrics`)
-                    .then(stats => {
-                        this.stats = stats.data;
-                        this.stats["lastResponseTimestamp"] = new Date();
+            getStats() {
+                this.metricServiceClient.rpcGetStats(new MetricsServiceRequest(), {})
+                    .then(resp => {
+                        this.stats = resp.getStats();
+                        this.lastResponseTime = new Date();
                     })
                     .catch(err => {
                         // eslint-disable-next-line
-                        console.log(err);
+                        console.error(err);
                     });
             }
         },
         created() {
-            this.fetchData();
+            this.getStats();
             setInterval(() => {
-                this.fetchData();
+                this.getStats();
             }, config.pollingInterval);
         }
     };

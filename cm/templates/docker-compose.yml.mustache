@@ -1,0 +1,16 @@
+version: '3'
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: docker/webserver/Dockerfile
+    image: dappley/dappley-stats/webserver
+    ports:
+      - "{{WEB_SERVER_PORT}}:{{WEB_SERVER_PORT}}"
+  grpc-proxy:
+    build:
+      context: .
+      dockerfile: docker/grpc-proxy/Dockerfile
+    image: dappley/dappley-stats/grpc-proxy
+    ports:
+      - "{{GRPC_PROXY_PORT}}:{{GRPC_PROXY_PORT}}"

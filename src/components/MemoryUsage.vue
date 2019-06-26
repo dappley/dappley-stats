@@ -1,15 +1,16 @@
 <template>
     <b-card title="Heap Usage (bytes)">
-        <b-card-text class="memory-usage" v-if="stats" style="font-size: 1.25em">
-            {{stats.HeapInuse}}/{{stats.HeapSys}}
+        <b-card-text class="memory-usage" v-if="heapInUse !== undefined && heapSys !== undefined"
+                     style="font-size: 1.25em">
+            {{heapInUse}}/{{heapSys}}
         </b-card-text>
         <generic-graph v-if="graphData" :chart-data="chartData" :custom-options="customOptions"></generic-graph>
     </b-card>
 </template>
 
 <script>
-    import {BCard, BCardText} from 'bootstrap-vue/es/components'
-    import Helper from "../js/Helper"
+    import {BCard, BCardText} from "bootstrap-vue/es/components";
+    import Helper from "../js/Helper";
     import GenericGraph from "./GenericGraph";
 
     export default {
@@ -19,10 +20,6 @@
             BCard, BCardText
         },
         props: {
-            stats: {
-                HeapSys: Number,
-                HeapInuse: Number
-            },
             graphData: Array
         },
         computed: {
@@ -32,16 +29,36 @@
                         datasets: [
                             {
                                 label: "Heap Used",
-                                data: Helper.transformToChartJSData(this.graphData, ["timestamp"], ["value", "heapInUse"]),
+                                data: this.graphData.map((v) => {
+                                    return {
+                                        x: Helper.unixTimestampToDate(v.getTimestamp()),
+                                        y: v.getMemoryStats().getHeapInUse()
+                                    };
+                                }),
                                 pointRadius: 0
                             },
                             {
                                 label: "Heap Size",
-                                data: Helper.transformToChartJSData(this.graphData, ["timestamp"], ["value", "heapSys"]),
+                                data: this.graphData.map((v) => {
+                                    return {
+                                        x: Helper.unixTimestampToDate(v.getTimestamp()),
+                                        y: v.getMemoryStats().getHeapSys()
+                                    };
+                                }),
                                 pointRadius: 0
                             }
                         ]
-                    }
+                    };
+                }
+            },
+            heapInUse: {
+                get() {
+                    return Helper.mapLast(this.graphData, (last) => last.getMemoryStats().getHeapInUse());
+                }
+            },
+            heapSys: {
+                get() {
+                    return Helper.mapLast(this.graphData, (last) => last.getMemoryStats().getHeapSys());
                 }
             }
         },
@@ -50,9 +67,9 @@
                 customOptions: {
                     scales: {
                         yAxes: [{
-                            type: 'logarithmic',
+                            type: "logarithmic",
                             scaleLabel: {
-                                labelString: 'Bytes'
+                                labelString: "Bytes"
                             }
                         }]
                     },
@@ -60,7 +77,7 @@
                         display: true
                     }
                 }
-            }
+            };
         }
-    }
+    };
 </script>
