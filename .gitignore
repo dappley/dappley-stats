@@ -21,7 +21,6 @@ yarn-error.log*
 *.sw?
 
 # Ignore generated configuration files
-docker/
 !docker/.gitignore
 docker-compose.yml
 config.json
