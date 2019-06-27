@@ -17,11 +17,13 @@ Create or modify a configuration file similar to `default.json` in `cm/views`
 ```
 Default Config:
 {
-  "NODE_IP": "0.0.0.0",     // proxy requires ip of a node's rpc server; ie. ipconfig getifaddr en0
-  "NODE_RPC_PORT": 50050,   // port # of a node's rpc server
-  "WEB_SERVER_PORT": 8080,  // webserver runs at http://0.0.0.0:8080
-  "POLLING_INTERVAL": 5000, // interval in milliseconds at which to poll a node's rpc server
-  "GRPC_PROXY_PORT": 8081   // port # of grpc-proxy for webserver to communicate with node
+  // ONLY ONE OF "NODE_IP" or "NODE_DOCKER_HOSTNAME" (offline usage) is required; the former gets precedence
+  "NODE_IP"                 : "0.0.0.0",    // proxy requires ip of a node's rpc server; ie. ipconfig getifaddr en0
+  "NODE_DOCKER_HOSTNAME"    : "dappley"     // hostname of the node running on the default network bridge
+  "NODE_RPC_PORT"           : 50050,        // port # of a node's rpc server
+  "WEB_SERVER_PORT"         : 8080,         // webserver runs at http://0.0.0.0:8080
+  "POLLING_INTERVAL"        : 5000,         // interval in milliseconds at which to poll a node's rpc server
+  "GRPC_PROXY_PORT"         : 8081          // port # of grpc-proxy for webserver to communicate with node
 }
 ```
 Run `cm/gen-config-files.sh`; ie. `./cm/gen-config-files.sh views/default.json`.
