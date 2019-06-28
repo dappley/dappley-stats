@@ -19,7 +19,7 @@ Default Config:
 {
   // ONLY ONE OF "NODE_IP" or "NODE_DOCKER_HOSTNAME" (offline usage) is required; the former gets precedence
   "NODE_IP"                 : "0.0.0.0",    // proxy requires ip of a node's rpc server; ie. ipconfig getifaddr en0
-  "NODE_DOCKER_HOSTNAME"    : "dappley"     // hostname of the node running on the default network bridge
+  "NODE_DOCKER_HOSTNAME"    : "dappley"     // hostname of the node's docker container running on the default network bridge
   "NODE_RPC_PORT"           : 50050,        // port # of a node's rpc server
   "WEB_SERVER_PORT"         : 8080,         // webserver runs at http://0.0.0.0:8080
   "POLLING_INTERVAL"        : 5000,         // interval in milliseconds at which to poll a node's rpc server
@@ -54,5 +54,6 @@ yarn run test
 
 ### Run Docker Configuration
 ```
-yarn run docker
+yarn run docker-build
+docker-compose up
 ```
