@@ -26,6 +26,11 @@ Default Config:
   "GRPC_PROXY_PORT"         : 8081          // port # of grpc-proxy for webserver to communicate with node
 }
 ```
+
+Note: For offline deployment, build the docker images on a host with internet and see,
+[docker-save](https://docs.docker.com/engine/reference/commandline/save/) and
+[docker-load](https://docs.docker.com/engine/reference/commandline/load/) for packaging/installation.
+
 Run `cm/gen-config-files.sh`; ie. `./cm/gen-config-files.sh views/default.json`.
 
 ### Compiles and hot-reloads for development
