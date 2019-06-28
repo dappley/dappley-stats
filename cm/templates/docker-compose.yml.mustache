@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: docker/webserver/Dockerfile
+    depends_on:
+      - grpc-proxy
     image: dappley/dappley-stats/webserver
     network_mode: bridge
     ports:
