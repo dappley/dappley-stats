@@ -7,7 +7,7 @@
     "build": "vue-cli-service build --dest dist",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
-    "docker": "yarn build && docker-compose up --build"
+    "docker-build": "yarn build && docker-compose build"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",

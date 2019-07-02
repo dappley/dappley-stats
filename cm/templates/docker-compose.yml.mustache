@@ -1,16 +1,28 @@
 version: '3'
 services:
   webserver:
+    container_name: dappley-stats
+    hostname: dappley-stats
     build:
       context: .
       dockerfile: docker/webserver/Dockerfile
+    depends_on:
+      - grpc-proxy
     image: dappley/dappley-stats/webserver
+    network_mode: bridge
     ports:
       - "{{WEB_SERVER_PORT}}:{{WEB_SERVER_PORT}}"
   grpc-proxy:
+    container_name: grpc-proxy
+    hostname: grpc-proxy
     build:
       context: .
       dockerfile: docker/grpc-proxy/Dockerfile
     image: dappley/dappley-stats/grpc-proxy
+    network_mode: bridge
     ports:
       - "{{GRPC_PROXY_PORT}}:{{GRPC_PROXY_PORT}}"
+    {{^NODE_IP}}
+    external_links:
+      - "{{NODE_DOCKER_HOSTNAME}}"
+    {{/NODE_IP}}
