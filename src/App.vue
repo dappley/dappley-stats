@@ -5,6 +5,7 @@
                 <b-card class="col m-3" title="Last Response Time">
                     <b-card-text>{{this.lastResponseTime}}</b-card-text>
                 </b-card>
+                <node-config class="m-3" :client="metricServiceClient"></node-config>
             </div>
             <div class="row m-3">
                 <memory-usage class="col m-3"
@@ -47,6 +48,7 @@
     import BlockStats from "./components/BlockStats";
     import {MetricServicePromiseClient} from "./js/github.com/dappley/go-dappley/rpc/pb/rpc_grpc_web_pb";
     import {MetricsServiceRequest} from "./js/github.com/dappley/go-dappley/rpc/pb/rpc_pb";
+    import NodeConfig from "./components/NodeConfig";
 
     export default {
         name: "App",
@@ -56,7 +58,8 @@
             Peers,
             MemoryUsage,
             CpuUsage,
-            TransactionPool
+            TransactionPool,
+            NodeConfig
         },
         data() {
             return {
