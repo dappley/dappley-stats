@@ -21,8 +21,7 @@
 
 <script>
     import {BButton, BModal, BFormGroup, BFormInput} from "bootstrap-vue";
-    import {MetricServicePromiseClient} from "../js/github.com/dappley/go-dappley/rpc/pb/rpc_grpc_web_pb";
-    import {MetricsServiceRequest} from "../js/github.com/dappley/go-dappley/rpc/pb/rpc_pb";
+    import {MetricsServiceClient, MetricsServiceRequest} from "../js/MetricsServiceClient";
 
     export default {
         name: "NodeConfig",
@@ -32,9 +31,6 @@
             BFormGroup,
             BFormInput
         },
-        props: {
-            client: MetricServicePromiseClient
-        },
         data() {
             return {
                 config: null
@@ -42,7 +38,7 @@
         },
         methods: {
             getNodeConfig() {
-                this.client.rpcGetNodeConfig(new MetricsServiceRequest(), {})
+                MetricsServiceClient.rpcGetNodeConfig(new MetricsServiceRequest(), {})
                     .then(resp => {
                         this.config = resp;
                         this.$bvModal.show("node-config-modal");
