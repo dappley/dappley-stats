@@ -10,7 +10,7 @@
 <script>
     import GenericGraph from "./GenericGraph";
     import Helper from "../js/Helper";
-    import {BCard, BCardText} from "bootstrap-vue/es/components";
+    import {BCard, BCardText} from "bootstrap-vue";
 
     export default {
         name: "ForkInfo",

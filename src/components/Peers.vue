@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import {BTable, BListGroup, BListGroupItem} from "bootstrap-vue/es/components";
+    import {BTable, BListGroup, BListGroupItem} from "bootstrap-vue";
 
     export default {
         name: "Peers",

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import {BCard, BCardText} from "bootstrap-vue/es/components";
+    import {BCard, BCardText} from "bootstrap-vue";
     import Helper from "../js/Helper";
     import GenericGraph from "./GenericGraph";
 
