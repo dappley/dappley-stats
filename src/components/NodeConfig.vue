@@ -52,8 +52,8 @@
         computed: {
             settings() {
                 return {
-                    "Transaction Pool Limit:": this.config.getTxPoolLimit().toString(),
-                    "Block Size Limit:": this.config.getBlkSizeLimit().toString(),
+                    "Transaction Pool Limit (KB):": this.config.getTxPoolLimit().toString(),
+                    "Block Size Limit (KB):": this.config.getBlkSizeLimit().toString(),
                     "Max Outgoing Connections:": this.config.getMaxConnectionOut().toString(),
                     "Max Incoming Connections:": this.config.getMaxConnectionIn().toString(),
                     "Producer Address:": this.config.getProducerAddress(),
