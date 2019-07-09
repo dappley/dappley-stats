@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 # dependencies: protoc, protoc-gen-grpc-web
+# usage: ./scripts/generate-proto-lib.sh <branch>
 
 set -ex
 
 cd ${0%/*}
 
-GIT_BRANCH="metrics-api-rpc-migration"
+GIT_BRANCH="${1:-master}"
 PROTO_PATH_BASE="github.com"
 PROTO_PATH="${PROTO_PATH_BASE}/dappley/go-dappley"
 GIT_BRANCH_URL="https://${PROTO_PATH}.git"
