@@ -81,15 +81,19 @@
                         console.error(err);
                     });
             },
-            handleApply() {
+            makeSetNodeConfigRequest() {
                 const req = new SetNodeConfigRequest();
                 const updatedConfigs = [];
                 for (const v of this.configuration)
                     if (!v.readonly)
                         v.addToRequest(req, updatedConfigs);
 
-                if (updatedConfigs.length > 0) {
-                    req.setUpdatedConfigsList(updatedConfigs);
+                req.setUpdatedConfigsList(updatedConfigs);
+                return req
+            },
+            handleApply() {
+                const req = this.makeSetNodeConfigRequest();
+                if (req.getUpdatedConfigsList().length > 0) {
                     MetricsServiceClient.rpcSetNodeConfig(req, {})
                         .then(() => {
                             this.toasterProps = {title: "Successfully updated node configuration.", variant: "info"};
