@@ -747,6 +747,61 @@ proto.rpcpb.RpcServicePromiseClient.prototype.rpcGetAllTransactionsFromTxPool =
 
 
 /**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.rpcpb.GetLastIrreversibleBlockRequest,
+ *   !proto.rpcpb.GetLastIrreversibleBlockResponse>}
+ */
+const methodInfo_RpcService_RpcGetLastIrreversibleBlock = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.rpcpb.GetLastIrreversibleBlockResponse,
+  /** @param {!proto.rpcpb.GetLastIrreversibleBlockRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.rpcpb.GetLastIrreversibleBlockResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.rpcpb.GetLastIrreversibleBlockRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.rpcpb.GetLastIrreversibleBlockResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.rpcpb.GetLastIrreversibleBlockResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.rpcpb.RpcServiceClient.prototype.rpcGetLastIrreversibleBlock =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/rpcpb.RpcService/RpcGetLastIrreversibleBlock',
+      request,
+      metadata || {},
+      methodInfo_RpcService_RpcGetLastIrreversibleBlock,
+      callback);
+};
+
+
+/**
+ * @param {!proto.rpcpb.GetLastIrreversibleBlockRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.rpcpb.GetLastIrreversibleBlockResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.rpcpb.RpcServicePromiseClient.prototype.rpcGetLastIrreversibleBlock =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/rpcpb.RpcService/RpcGetLastIrreversibleBlock',
+      request,
+      metadata || {},
+      methodInfo_RpcService_RpcGetLastIrreversibleBlock);
+};
+
+
+/**
  * @param {string} hostname
  * @param {?Object} credentials
  * @param {?Object} options
@@ -1272,6 +1327,61 @@ proto.rpcpb.MetricServicePromiseClient.prototype.rpcGetStats =
       request,
       metadata || {},
       methodInfo_MetricService_RpcGetStats);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.rpcpb.MetricsServiceRequest,
+ *   !proto.rpcpb.GetNodeConfig>}
+ */
+const methodInfo_MetricService_RpcGetNodeConfig = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.rpcpb.GetNodeConfig,
+  /** @param {!proto.rpcpb.MetricsServiceRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.rpcpb.GetNodeConfig.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.rpcpb.MetricsServiceRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.rpcpb.GetNodeConfig)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.rpcpb.GetNodeConfig>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.rpcpb.MetricServiceClient.prototype.rpcGetNodeConfig =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/rpcpb.MetricService/RpcGetNodeConfig',
+      request,
+      metadata || {},
+      methodInfo_MetricService_RpcGetNodeConfig,
+      callback);
+};
+
+
+/**
+ * @param {!proto.rpcpb.MetricsServiceRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.rpcpb.GetNodeConfig>}
+ *     A native promise that resolves to the response
+ */
+proto.rpcpb.MetricServicePromiseClient.prototype.rpcGetNodeConfig =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/rpcpb.MetricService/RpcGetNodeConfig',
+      request,
+      metadata || {},
+      methodInfo_MetricService_RpcGetNodeConfig);
 };
 
 

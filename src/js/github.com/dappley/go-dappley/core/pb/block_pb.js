@@ -344,7 +344,8 @@ proto.corepb.BlockHeader.toObject = function(includeInstance, msg) {
     nonce: jspb.Message.getFieldWithDefault(msg, 3, 0),
     timestamp: jspb.Message.getFieldWithDefault(msg, 4, 0),
     signature: msg.getSignature_asB64(),
-    height: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    height: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    producer: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -404,6 +405,10 @@ proto.corepb.BlockHeader.deserializeBinaryFromReader = function(msg, reader) {
     case 6:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setHeight(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setProducer(value);
       break;
     default:
       reader.skipField();
@@ -473,6 +478,13 @@ proto.corepb.BlockHeader.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeUint64(
       6,
+      f
+    );
+  }
+  f = message.getProducer();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -638,6 +650,21 @@ proto.corepb.BlockHeader.prototype.getHeight = function() {
 /** @param {number} value */
 proto.corepb.BlockHeader.prototype.setHeight = function(value) {
   jspb.Message.setProto3IntField(this, 6, value);
+};
+
+
+/**
+ * optional string producer = 7;
+ * @return {string}
+ */
+proto.corepb.BlockHeader.prototype.getProducer = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/** @param {string} value */
+proto.corepb.BlockHeader.prototype.setProducer = function(value) {
+  jspb.Message.setProto3StringField(this, 7, value);
 };
 
 

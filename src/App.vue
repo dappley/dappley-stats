@@ -5,6 +5,7 @@
                 <b-card class="col m-3" title="Last Response Time">
                     <b-card-text>{{this.lastResponseTime}}</b-card-text>
                 </b-card>
+                <node-config class="m-3"></node-config>
             </div>
             <div class="row m-3">
                 <memory-usage class="col m-3"
@@ -45,8 +46,9 @@
     import Peers from "./components/Peers";
     import ForkInfo from "./components/ForkInfo";
     import BlockStats from "./components/BlockStats";
-    import {MetricServicePromiseClient} from "./js/github.com/dappley/go-dappley/rpc/pb/rpc_grpc_web_pb";
-    import {MetricsServiceRequest} from "./js/github.com/dappley/go-dappley/rpc/pb/rpc_pb";
+    import {MetricsServiceClient, MetricsServiceRequest} from "./js/MetricsServiceClient";
+    import NodeConfig from "./components/NodeConfig";
+    import {BCard, BCardText} from "bootstrap-vue";
 
     export default {
         name: "App",
@@ -56,18 +58,20 @@
             Peers,
             MemoryUsage,
             CpuUsage,
-            TransactionPool
+            TransactionPool,
+            NodeConfig,
+            BCard,
+            BCardText
         },
         data() {
             return {
                 stats: null,
-                lastResponseTime: null,
-                metricServiceClient: new MetricServicePromiseClient(`http://${config.host}:${config.port}`, null, null)
+                lastResponseTime: null
             };
         },
         methods: {
             getStats() {
-                this.metricServiceClient.rpcGetStats(new MetricsServiceRequest(), {})
+                MetricsServiceClient.rpcGetStats(new MetricsServiceRequest(), {})
                     .then(resp => {
                         this.stats = resp.getStats();
                         this.lastResponseTime = new Date();

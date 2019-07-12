@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy:latest
+FROM envoyproxy/envoy:v1.10.0
 
 COPY docker/grpc-proxy/envoy.yaml /etc/envoy/envoy.yaml
 EXPOSE {{GRPC_PROXY_PORT}}
