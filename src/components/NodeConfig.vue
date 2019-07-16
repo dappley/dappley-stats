@@ -7,7 +7,7 @@
                 <div v-for="(item, key) in configuration" :key="key">
                     <b-form-group :label="`${item.label}:`" label-class="font-weight-bold pt-0">
                         <div v-if="Array.isArray(model[item.modelKey])">
-                            <div v-for="(v, i) in model[item.modelKey]" :key="i" style="display: flex;">
+                            <div v-for="(_, i) in model[item.modelKey]" :key="i" style="display: flex;">
                                 <b-button v-if="!item.readonly" class="m-1"
                                           @click="model[item.modelKey].splice(i, 1)">-
                                 </b-button>
@@ -35,7 +35,7 @@
 
 <script>
     import {BButton, BModal, BFormGroup, BFormInput, BToast} from "bootstrap-vue";
-    import {MetricsServiceClient, MetricsServiceRequest, SetNodeConfigRequest} from "../js/MetricsServiceClient";
+    import {MetricsServiceClient, SetNodeConfigRequest} from "../js/MetricsServiceClient";
     import _ from "lodash";
 
     const ConfigType = SetNodeConfigRequest.ConfigType;
@@ -72,9 +72,9 @@
         },
         methods: {
             getNodeConfig() {
-                MetricsServiceClient.rpcGetNodeConfig(new MetricsServiceRequest(), {})
-                    .then(resp => {
-                        this.config = resp;
+                MetricsServiceClient.getNodeConfig()
+                    .then(res => {
+                        this.config = res;
                         this.model = _.cloneDeep(this.config.toObject());
                         this.$refs.nodeConfigModal.show();
                     })
@@ -96,7 +96,7 @@
             handleApply() {
                 const req = this.makeSetNodeConfigRequest();
                 if (req.getUpdatedConfigsList().length > 0) {
-                    MetricsServiceClient.rpcSetNodeConfig(req, {})
+                    MetricsServiceClient.setNodeConfig(req)
                         .then(() => {
                             this.toasterProps = {title: "Successfully updated node configuration.", variant: "info", message: null};
                             this.$refs.setNodeConfigToast.show();
@@ -105,7 +105,7 @@
                             this.toasterProps = {title: "Unable to update node configuration.", variant: "warning", message: err.message};
                             this.$refs.setNodeConfigToast.show();
                             // eslint-disable-next-line
-                            console.log(err);
+                            console.error(err);
                         });
                 }
             },
@@ -194,7 +194,6 @@
                             configList,
                             ConfigType.MAX_PRODUCERS
                         ),
-                        configType: ConfigType.MAX_PRODUCERS
                     },
                     {
                         modelKey: "ipfsAddressesList",

@@ -1,0 +1,9 @@
+FROM node:12.6.0
+
+RUN npm -g install yarn
+
+COPY auth_server /auth_server
+WORKDIR /auth_server
+RUN yarn install
+
+CMD yarn start
