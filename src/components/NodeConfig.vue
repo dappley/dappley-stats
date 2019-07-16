@@ -12,7 +12,7 @@
                                           @click="model[item.modelKey].splice(i, 1)">-
                                 </b-button>
                                 <b-form-input :readonly="item.readonly" class="m-1"
-                                              :value="v.toString()"></b-form-input>
+                                              v-model="model[item.modelKey][i]"></b-form-input>
                             </div>
                             <div class="m-1">
                                 <b-button v-if="!item.readonly" style="width: 100%;"
@@ -28,6 +28,7 @@
         </b-modal>
         <b-toast ref="setNodeConfigToast" :title="toasterProps.title" :variant="toasterProps.variant"
                  class="b-toaster-top-full" toaster="b-toaster-bottom-right" append-toast>
+            {{toasterProps.message}}
         </b-toast>
     </div>
 </template>
@@ -64,7 +65,8 @@
                 },
                 toasterProps: {
                     title: null,
-                    variant: null
+                    variant: null,
+                    message: null
                 }
             };
         },
@@ -96,11 +98,11 @@
                 if (req.getUpdatedConfigsList().length > 0) {
                     MetricsServiceClient.rpcSetNodeConfig(req, {})
                         .then(() => {
-                            this.toasterProps = {title: "Successfully updated node configuration.", variant: "info"};
+                            this.toasterProps = {title: "Successfully updated node configuration.", variant: "info", message: null};
                             this.$refs.setNodeConfigToast.show();
                         })
                         .catch(err => {
-                            this.toasterProps = {title: "Unable to update node configuration.", variant: "warning"};
+                            this.toasterProps = {title: "Unable to update node configuration.", variant: "warning", message: err.message};
                             this.$refs.setNodeConfigToast.show();
                             // eslint-disable-next-line
                             console.log(err);
@@ -127,7 +129,8 @@
                                 this.model.txPoolLimit,
                                 "setTxPoolLimit",
                                 configList,
-                                ConfigType.TX_POOL_LIMIT)
+                                ConfigType.TX_POOL_LIMIT
+                            )
                     },
                     {
                         modelKey: "blkSizeLimit",
