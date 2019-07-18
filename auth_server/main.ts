@@ -13,16 +13,7 @@ process.env.NODE_ENV = environment;
 
 const api: Express = express();
 api.use(bodyParser.json());
-api.use(cors({
-    /* same cors configuration as ../docker/grpc-proxy/envoy.yaml */
-    allowedHeaders: ["host", "keep-alive", "user-agent", "cache-control", "content-type", "content-transfer-encoding",
-        "x-accept-content-transfer-encoding", "x-accept-response-streaming", "x-user-agent",
-        "x-grpc-web", "grpc-timeout", "authorization"],
-    exposedHeaders: ["grpc-status", "grpc-message"],
-    methods: ["GET", "PUT", "DELETE", "POST", "OPTIONS"],
-    optionsSuccessStatus: httpStatus.OK,
-    origin: "*",
-}));
+api.use(cors());
 
 /* setup authenticated/ignored routes */
 api.use(jwt({
@@ -36,11 +27,6 @@ api.use(jwt({
         {
             methods: ["PUT"],
             url: "/user",
-        },
-        {
-            /* grpc-proxy sends an unauthorized OPTIONS request to retrieve metadata before the POST query */
-            methods: ["OPTIONS"],
-            url: /\/rpcpb.MetricService\/.*/,
         },
     ],
 }));
@@ -80,8 +66,9 @@ api.put("/user", async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-/* relay grpc-web requests after JWT authentication */
-api.all(/\/rpcpb.MetricService\/.*/, (_: Request, res: Response, next: NextFunction) => {
+/* relay grpc-web POST requests after JWT authentication */
+api.post(/\/rpcpb.MetricService\/.*/, (_: Request, res: Response, next: NextFunction) => {
+    res.setHeader("Connection", "close");
     res.status(httpStatus.OK).end();
     next();
 });
