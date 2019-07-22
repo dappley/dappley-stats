@@ -1334,15 +1334,15 @@ proto.rpcpb.MetricServicePromiseClient.prototype.rpcGetStats =
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
  *   !proto.rpcpb.MetricsServiceRequest,
- *   !proto.rpcpb.GetNodeConfig>}
+ *   !proto.rpcpb.GetNodeConfigResponse>}
  */
 const methodInfo_MetricService_RpcGetNodeConfig = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.rpcpb.GetNodeConfig,
+  proto.rpcpb.GetNodeConfigResponse,
   /** @param {!proto.rpcpb.MetricsServiceRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.rpcpb.GetNodeConfig.deserializeBinary
+  proto.rpcpb.GetNodeConfigResponse.deserializeBinary
 );
 
 
@@ -1351,9 +1351,9 @@ const methodInfo_MetricService_RpcGetNodeConfig = new grpc.web.AbstractClientBas
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.rpcpb.GetNodeConfig)}
+ * @param {function(?grpc.web.Error, ?proto.rpcpb.GetNodeConfigResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.rpcpb.GetNodeConfig>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.rpcpb.GetNodeConfigResponse>|undefined}
  *     The XHR Node Readable Stream
  */
 proto.rpcpb.MetricServiceClient.prototype.rpcGetNodeConfig =
@@ -1372,7 +1372,7 @@ proto.rpcpb.MetricServiceClient.prototype.rpcGetNodeConfig =
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.rpcpb.GetNodeConfig>}
+ * @return {!Promise<!proto.rpcpb.GetNodeConfigResponse>}
  *     A native promise that resolves to the response
  */
 proto.rpcpb.MetricServicePromiseClient.prototype.rpcGetNodeConfig =
@@ -1382,6 +1382,61 @@ proto.rpcpb.MetricServicePromiseClient.prototype.rpcGetNodeConfig =
       request,
       metadata || {},
       methodInfo_MetricService_RpcGetNodeConfig);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.rpcpb.SetNodeConfigRequest,
+ *   !proto.rpcpb.GetNodeConfigResponse>}
+ */
+const methodInfo_MetricService_RpcSetNodeConfig = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.rpcpb.GetNodeConfigResponse,
+  /** @param {!proto.rpcpb.SetNodeConfigRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.rpcpb.GetNodeConfigResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.rpcpb.SetNodeConfigRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.rpcpb.GetNodeConfigResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.rpcpb.GetNodeConfigResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.rpcpb.MetricServiceClient.prototype.rpcSetNodeConfig =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/rpcpb.MetricService/RpcSetNodeConfig',
+      request,
+      metadata || {},
+      methodInfo_MetricService_RpcSetNodeConfig,
+      callback);
+};
+
+
+/**
+ * @param {!proto.rpcpb.SetNodeConfigRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.rpcpb.GetNodeConfigResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.rpcpb.MetricServicePromiseClient.prototype.rpcSetNodeConfig =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/rpcpb.MetricService/RpcSetNodeConfig',
+      request,
+      metadata || {},
+      methodInfo_MetricService_RpcSetNodeConfig);
 };
 
 
