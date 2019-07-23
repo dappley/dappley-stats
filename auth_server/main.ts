@@ -57,7 +57,7 @@ api.put("/user", async (req: Request, res: Response, next: NextFunction) => {
         const ok = await UserInfoDB.getInstance().addUser(username, password);
         const response = {success: ok};
         res.status(httpStatus.OK).json(response);
-        logger.info("added new user", {success: ok, username, password});
+        logger.info("added new user", {success: ok, username});
     } catch (e) {
         res.status(httpStatus.BAD_REQUEST).end();
         logger.error((e as Error).message, {username});

@@ -13,8 +13,7 @@
     "jsonwebtoken": "^8.5.1",
     "pm2": "^3.5.1",
     "sqlite3": "^4.0.9",
-    "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^3.9.0"
+    "tracer": "^0.9.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

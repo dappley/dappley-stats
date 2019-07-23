@@ -38,7 +38,7 @@ yarn run test
     "secret"           : "",                   // base64 encoded secret (ie.  echo "myawesomesecret" | base64)
     "port"             : 8082,                 // api port #
     "environment"      : "production",         // one of: "production", "development"
-    "logLevel"         : "info"                // one of: "error", "warn", "info", "verbose", "debug", "silly"; https://github.com/winstonjs/winston#logging
+    "logLevel"         : "info"                // one of: 'log':0, 'trace':1, 'debug':2, 'info':3, 'warn':4, 'error':5, 'fatal':6; https://www.npmjs.com/package/tracer#customize-output-format
     "defaultUser"      : "admin",
     "defaultPassword"  : ""
 }
