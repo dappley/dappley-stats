@@ -6,7 +6,6 @@
   },
   "AUTH_SERVER": {
     "PORT": 8082,
-    "DOCKER_HOSTNAME": "auth-server",
     "SECRET": "",
     "DEFAULT_USER": "admin",
     "DEFAULT_PASS": ""
