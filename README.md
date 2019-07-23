@@ -17,13 +17,23 @@ Create or modify a configuration file similar to `default.json` in `cm/views`
 ```
 Default Config:
 {
-  // ONLY ONE OF "NODE_IP" or "NODE_DOCKER_HOSTNAME" (offline usage) is required; the former gets precedence
-  "NODE_IP"                 : "0.0.0.0",    // proxy requires ip of a node's rpc server; ie. ipconfig getifaddr en0
-  "NODE_DOCKER_HOSTNAME"    : "dappley"     // hostname of the node's docker container running on the default network bridge
-  "NODE_RPC_PORT"           : 50050,        // port # of a node's rpc server
-  "WEB_SERVER_PORT"         : 8080,         // webserver runs at http://0.0.0.0:8080
-  "POLLING_INTERVAL"        : 5000,         // interval in milliseconds at which to poll a node's rpc server
-  "GRPC_PROXY_PORT"         : 8081          // port # of grpc-proxy for webserver to communicate with node
+  // ONLY ONE OF "NODE.IP" or "NODE.DOCKER_HOSTNAME / NODE.DOCKER_NETWORK" (offline usage) is required; the former gets precedence
+  "NODE": {
+    "DOCKER_HOSTNAME"  : "dappley",            // hostname of the node's docker container
+    "DOCKER_NETWORK"   : "go-dappley_default"  // the network the docker container is connected to
+    "IP"               : "0.0.0.0",            // proxy requires ip of a node's rpc server; ie. ipconfig getifaddr en0
+    "RPC_PORT"         : 50050,                // port # of a node's rpc server
+  },
+  "AUTH_SERVER": {
+    "IP"               : "0.0.0.0",            // ip of the auth-server (ie. use, ipconfig getifaddr en0, to run locally for debugging)
+    "PORT"             : 8082,                 // port # of auth-server for user authorization
+    "SECRET"           : "",                   // base64 encoded secret for jwt authentication (ie.  echo "myawesomesecret" | base64)
+    "DEFAULT_USER"     : "admin"               // any string with length > 0
+    "DEFAULT_PASS"     : ""                    // any string with length > 0
+  },
+  "WEB_SERVER_PORT"    : 8080,                 // webserver runs at http://0.0.0.0:8080
+  "POLLING_INTERVAL"   : 5000,                 // interval in milliseconds at which to poll a node's rpc server
+  "GRPC_PROXY_PORT"    : 8081                  // port # of grpc-proxy for webserver to communicate with node
 }
 ```
 
@@ -35,8 +45,8 @@ Run `cm/gen-config-files.sh`; ie. `./cm/gen-config-files.sh views/default.json`.
 
 ### Compiles and hot-reloads for development
 ```
-# start envoy proxy
-docker-compose up grpc-proxy
+# start envoy proxy & authorization server
+docker-compose up grpc-proxy auth-server
 
 # start webserver
 yarn run serve
@@ -52,7 +62,7 @@ yarn run build
 yarn run lint
 ```
 
-### Run your unit tests
+### Run unit tests
 ```
 yarn run test
 ```

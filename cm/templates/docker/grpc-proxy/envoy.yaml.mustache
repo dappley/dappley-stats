@@ -14,7 +14,18 @@ static_resources:
                   virtual_hosts:
                     - name: local_service
                       domains: ["*"]
+                      per_filter_config:
+                        envoy.ext_authz:
+                          check_settings:
+                            context_extensions:
+                              virtual_host: local_service
                       routes:
+                        - match: { prefix: "/", headers: [ {name: ":method", exact_match: "OPTIONS" }] }
+                          route:
+                            cluster: metrics_service
+                          per_filter_config:
+                            envoy.ext_authz:
+                              disabled: true
                         - match: { prefix: "/" }
                           route:
                             cluster: metrics_service
@@ -22,10 +33,21 @@ static_resources:
                         allow_origin:
                           - "*"
                         allow_methods: GET, PUT, DELETE, POST, OPTIONS
-                        allow_headers: host,keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout
+                        allow_headers: >-
+                          host,keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,
+                          x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,
+                          x-grpc-web,grpc-timeout,authorization
                         expose_headers: grpc-status,grpc-message
                         enabled: true
                 http_filters:
+                  - name: envoy.ext_authz
+                    config:
+                      http_service:
+                        server_uri:
+                          uri: {{AUTH_SERVER.IP}}{{^AUTH_SERVER.IP}}auth-server{{/AUTH_SERVER.IP}}:{{AUTH_SERVER.PORT}}
+                          cluster: ext-authz
+                          timeout: 3s
+                      failure_mode_allow: false
                   - name: envoy.grpc_web
                   - name: envoy.cors
                   - name: envoy.router
@@ -35,5 +57,17 @@ static_resources:
       type: logical_dns
       http2_protocol_options: {}
       lb_policy: round_robin
-      hosts: [{ socket_address: { address: {{NODE_IP}}{{^NODE_IP}}{{NODE_DOCKER_HOSTNAME}}{{/NODE_IP}}, port_value: {{NODE_RPC_PORT}} }}]
-
+      hosts: [{ socket_address: { address: {{NODE.IP}}{{^NODE.IP}}{{NODE.DOCKER_HOSTNAME}}{{/NODE.IP}}, port_value: {{NODE.RPC_PORT}} }}]
+    - name: ext-authz
+      connect_timeout: 1s
+      type: logical_dns
+      lb_policy: round_robin
+      load_assignment:
+        cluster_name: ext-authz
+        endpoints:
+          - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: {{AUTH_SERVER.IP}}{{^AUTH_SERVER.IP}}auth-server{{/AUTH_SERVER.IP}}
+                    port_value: {{AUTH_SERVER.PORT}}

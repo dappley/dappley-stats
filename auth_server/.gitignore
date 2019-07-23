@@ -1,0 +1,9 @@
+.*
+!.*ignore
+node_modules/
+.idea/
+.vscode/
+*.js
+*.js.map
+*.log
+db
