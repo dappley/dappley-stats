@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import fs from "fs";
+import fse from "fs-extra";
 import jwt from "jsonwebtoken";
 import path from "path";
 import SQLite, {Database, RunResult, Statement} from "sqlite3";
@@ -42,7 +43,8 @@ export class UserInfoDB {
      * @returns Promise of null on successful initialization, otherwise an Error
      */
     public init(): Promise<null | Error> {
-        return new Promise((resolve: any, reject: any) => {
+        return new Promise(async (resolve: any, reject: any) => {
+            await fse.ensureDir(path.dirname(this.databasePath));
             this.db = new SQLite.Database(this.databasePath || UserInfoDB.DB_PATH,
                 SQLite.OPEN_CREATE | SQLite.OPEN_READWRITE, async (err: Error | null) => {
                     if (err || !this.db) {
