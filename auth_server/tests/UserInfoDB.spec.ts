@@ -72,4 +72,61 @@ describe("SqliteUserInfoDB Test Suite", () => {
             fail("Unable to delete added user");
         }
     });
+
+    test("Should not be able login to uninitialized database", async () => {
+       try {
+           const newDb = new UserInfoDB(":memory:");
+           await newDb.login("user-0", "password");
+           fail("Should not be able to login to uninitialized database");
+       } catch (e) {
+           expect(e).toBe(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+       }
+    });
+
+    test("Should reject invalid login arguments", async () => {
+       try {
+           await db.login("", "");
+           fail("Should not be able to login with invalid arguments");
+       } catch (e) {
+           expect(e).toBe(UserInfoDB.INVALID_ARGUMENTS_ERROR);
+       }
+    });
+
+    test("Should not be able add a user to uninitialized database", async () => {
+        try {
+            const newDb = new UserInfoDB(":memory:");
+            await newDb.addUser("username", "password");
+            fail("Should not be able to add a user to uninitialized database");
+        } catch (e) {
+            expect(e).toBe(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+        }
+    });
+
+    test("Should reject invalid addUser arguments", async () => {
+        try {
+            await db.addUser("", "");
+            fail("Should not be able to add a user with invalid arguments");
+        } catch (e) {
+            expect(e).toBe(UserInfoDB.INVALID_ARGUMENTS_ERROR);
+        }
+    });
+
+    test("Should not be able delete a user with an uninitialized database", async () => {
+        try {
+            const newDb = new UserInfoDB(":memory:");
+            await newDb.deleteUser("username");
+            fail("Should not be able delete a user with an uninitialized database");
+        } catch (e) {
+            expect(e).toBe(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+        }
+    });
+
+    test("Should reject invalid deleteUser arguments", async () => {
+        try {
+            await db.deleteUser("");
+            fail("Should reject invalid deleteUser arguments");
+        } catch (e) {
+            expect(e).toBe(UserInfoDB.INVALID_ARGUMENTS_ERROR);
+        }
+    });
 });

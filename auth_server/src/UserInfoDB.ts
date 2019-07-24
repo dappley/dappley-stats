@@ -11,8 +11,8 @@ import logger from "./Logger";
 const readFile = util.promisify(fs.readFile);
 
 export class UserInfoDB {
-    private static UNINITIALIZED_DATABASE_ERROR = new Error("database not initialized");
-    private static INVALID_ARGUMENTS_ERROR = new Error("at least one of the supplied arguments are invalid");
+    public static UNINITIALIZED_DATABASE_ERROR = new Error("database not initialized");
+    public static INVALID_ARGUMENTS_ERROR = new Error("at least one of the supplied arguments are invalid");
     private static DB_PATH: string = path.join(__dirname, "..", "db", "user_info.sqlite");
     private static INIT_DATABASE_SCRIPT: string = path.join(
         __dirname, "..", "resources", "init_user_info_database.sql");
@@ -50,6 +50,7 @@ export class UserInfoDB {
                     if (err || !this.db) {
                         logger.error(err!);
                         reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+                        return;
                     }
 
                     /* create the user info table if it doesn't exist */
@@ -60,11 +61,13 @@ export class UserInfoDB {
                             if (e) {
                                 logger.error(e!);
                                 reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+                                return;
                             }
                             try {
                                 await UserInfoDB.createDefaultUser(db);
                             } catch (e) {
                                 reject(e);
+                                return;
                             }
                             resolve(null);
                         });
@@ -88,6 +91,7 @@ export class UserInfoDB {
                     if (err) {
                         logger.error("unable to create default user", {defaultUsername, err});
                         reject(new Error("unable to create default user"));
+                        return;
                     }
                     resolve(null);
                 });
@@ -115,6 +119,7 @@ export class UserInfoDB {
             if (username && password) {
                 if (!this.db) {
                     reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+                    return;
                 }
                 const hash = UserInfoDB.hashPassword(password);
                 this.db!.run("INSERT INTO user_info VALUES (?, ?)", [username, hash],
@@ -122,6 +127,7 @@ export class UserInfoDB {
                         if (err) {
                             logger.error(err);
                             reject(new Error("unable to add user"));
+                            return;
                         }
 
                         resolve(!!this.lastID);
@@ -143,12 +149,14 @@ export class UserInfoDB {
            if (username) {
                if (!this.db) {
                    reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+                   return;
                }
 
                this.db!.run("DELETE FROM user_info WHERE username = ?", [username],
                    function(this: RunResult, err: Error | null) {
                        if (err) {
                            reject(new Error("unable to delete user"));
+                           return;
                        }
                        resolve(this.changes > 0);
                    });
@@ -169,6 +177,7 @@ export class UserInfoDB {
             if (username && password) {
                 if (!this.db) {
                     reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+                    return;
                 }
 
                 this.db!.get("SELECT password FROM user_info WHERE username = ?", [username],
@@ -176,6 +185,7 @@ export class UserInfoDB {
                         if (err) {
                             logger.error(err);
                             reject(new Error("unable to login user"));
+                            return;
                         }
 
                         if (row) {
