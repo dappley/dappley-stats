@@ -24,14 +24,6 @@ api.use(jwt({
             methods: ["POST"],
             url: "/login",
         },
-        {
-            methods: ["PUT"],
-            url: "/user",
-        },
-        {
-            methods: ["DELETE"],
-            url: /\/user\/[^\/]/,
-        },
     ],
 }));
 

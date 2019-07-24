@@ -78,11 +78,25 @@ docker-compose up
 AUTH_SERVER_IP=0.0.0.0
 AUTH_SERVER_PORT=8082
 
+# request authorization
+USERNAME=admin
+PASSWORD=password
+RES=`curl -s -XPOST "${AUTH_SERVER_IP}:${AUTH_SERVER_PORT}/login" \
+    -H "Content-Type: application/json" \
+    -d "{\"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\"}"`
+
+# copy tkn from RES, ie.
+TOKEN=`echo ${RES} | jq -r .tkn`
+
 # add user
 USERNAME=username
 PASSWORD=password
-curl -XPUT "${AUTH_SERVER_IP}:${AUTH_SERVER_PORT}/user" -H "Content-Type: application/json" -d "{\"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\"}"
+curl -XPUT "${AUTH_SERVER_IP}:${AUTH_SERVER_PORT}/user" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -d "{\"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\"}"
 
 # remove user
-curl -XDELETE "${AUTH_SERVER_IP}:${AUTH_SERVER_PORT}/user/${USERNAME}"
+curl -XDELETE "${AUTH_SERVER_IP}:${AUTH_SERVER_PORT}/user/${USERNAME}" \
+    -H "Authorization: Bearer ${TOKEN}"
 ```
