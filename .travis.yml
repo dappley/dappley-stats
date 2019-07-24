@@ -1,0 +1,12 @@
+language: node_js
+os:
+  - linux
+node_js:
+  - node
+install:
+  - yarn install
+before_script:
+  - bash cm/gen-config-files.sh views/default.json
+  - yarn lint
+script:
+  - yarn test
