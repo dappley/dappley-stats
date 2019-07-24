@@ -44,43 +44,6 @@ api.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-/* PUT /user endpoint creates a new user or errors if the user already exists */
-api.put("/user", async (req: Request, res: Response, next: NextFunction) => {
-    let username;
-    try {
-        username = req.body.username;
-        const {password} = req.body;
-        const ok = await UserInfoDB.getInstance().addUser(username, password);
-        res.status(httpStatus.OK).json({success: ok});
-        logger.info("added new user", {success: ok, username});
-    } catch (e) {
-        res.status(httpStatus.BAD_REQUEST).end();
-        logger.error((e as Error).message, {username});
-    } finally {
-        next();
-    }
-});
-
-/* DELETE /user endpoint attempts to remove a user */
-api.delete("/user/:username", async (req: Request, res: Response, next: NextFunction) => {
-    let username;
-    try {
-        username = req.params.username;
-        const ok = await UserInfoDB.getInstance().deleteUser(username);
-        res.status(httpStatus.OK).json({success: ok});
-        if (ok) {
-            logger.info("deleted user", {username});
-        } else {
-            logger.info("attempted to delete non existing user", {username});
-        }
-    } catch (e) {
-        res.status(httpStatus.BAD_REQUEST).end();
-        logger.error((e as Error).message, {username});
-    } finally {
-        next();
-    }
-});
-
 /* relay grpc-web POST requests after JWT authentication */
 api.post(/\/rpcpb.MetricService\/.*/, (_: Request, res: Response, next: NextFunction) => {
     res.setHeader("Connection", "close");
@@ -90,7 +53,9 @@ api.post(/\/rpcpb.MetricService\/.*/, (_: Request, res: Response, next: NextFunc
 
 /* main */
 (async () => {
-    await UserInfoDB.getInstance().init();
+    const db = UserInfoDB.getInstance();
+    await db.init();
+    await db.createDefaultUser();
     api.listen(port, (err: any) => {
         if (err) {
             logger.error(err);

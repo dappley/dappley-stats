@@ -63,12 +63,6 @@ export class UserInfoDB {
                                 reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
                                 return;
                             }
-                            try {
-                                await UserInfoDB.createDefaultUser(db);
-                            } catch (e) {
-                                reject(e);
-                                return;
-                            }
                             resolve(null);
                         });
                     } catch (err) {
@@ -81,12 +75,15 @@ export class UserInfoDB {
 
     /**
      *
-     * @param db Database to insert the default user into
      * @returns Promise of null on successful insertion/replacement of the default user, otherwise an Error
      */
-    private static createDefaultUser(db: Database): Promise<null | Error> {
+    public createDefaultUser(): Promise<null | Error> {
         return new Promise((resolve, reject) => {
-            db.run("REPLACE INTO user_info VALUES (?, ?)",
+            if (!this.db) {
+                reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+                return;
+            }
+            this.db!.run("REPLACE INTO user_info VALUES (?, ?)",
                 [defaultUsername, UserInfoDB.hashPassword(defaultPassword)], function(this: RunResult, err: Error) {
                     if (err) {
                         logger.error("unable to create default user", {defaultUsername, err});
