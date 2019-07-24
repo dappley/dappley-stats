@@ -28,6 +28,10 @@ api.use(jwt({
             methods: ["PUT"],
             url: "/user",
         },
+        {
+            methods: ["DELETE"],
+            url: /\/user\/[^\/]/,
+        },
     ],
 }));
 
@@ -55,9 +59,28 @@ api.put("/user", async (req: Request, res: Response, next: NextFunction) => {
         username = req.body.username;
         const {password} = req.body;
         const ok = await UserInfoDB.getInstance().addUser(username, password);
-        const response = {success: ok};
-        res.status(httpStatus.OK).json(response);
+        res.status(httpStatus.OK).json({success: ok});
         logger.info("added new user", {success: ok, username});
+    } catch (e) {
+        res.status(httpStatus.BAD_REQUEST).end();
+        logger.error((e as Error).message, {username});
+    } finally {
+        next();
+    }
+});
+
+/* DELETE /user endpoint attempts to remove a user */
+api.delete("/user/:username", async (req: Request, res: Response, next: NextFunction) => {
+    let username;
+    try {
+        username = req.params.username;
+        const ok = await UserInfoDB.getInstance().deleteUser(username);
+        res.status(httpStatus.OK).json({success: ok});
+        if (ok) {
+            logger.info("deleted user", {username});
+        } else {
+            logger.info("attempted to delete non existing user", {username});
+        }
     } catch (e) {
         res.status(httpStatus.BAD_REQUEST).end();
         logger.error((e as Error).message, {username});

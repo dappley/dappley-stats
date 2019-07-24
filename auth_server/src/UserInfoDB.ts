@@ -135,6 +135,32 @@ export class UserInfoDB {
     /**
      *
      * @param username
+     * @returns Promise of a boolean representing whether the user was deleted
+     *          from the database, otherwise an Error
+     */
+    public deleteUser(username: string): Promise<boolean | Error> {
+        return new Promise((resolve: any, reject: any) => {
+           if (username) {
+               if (!this.db) {
+                   reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+               }
+
+               this.db!.run("DELETE FROM user_info WHERE username = ?", [username],
+                   function(this: RunResult, err: Error | null) {
+                       if (err) {
+                           reject(new Error("unable to delete user"));
+                       }
+                       resolve(this.changes > 0);
+                   });
+           } else {
+               reject(UserInfoDB.INVALID_ARGUMENTS_ERROR);
+           }
+        });
+    }
+
+    /**
+     *
+     * @param username
      * @param password
      * @returns Promise of a JWT if the user credentials are valid, otherwise an Error
      */

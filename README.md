@@ -72,3 +72,17 @@ yarn run test
 yarn run docker-build
 docker-compose up
 ```
+
+### Authorize additional users
+```bash
+AUTH_SERVER_IP=0.0.0.0
+AUTH_SERVER_PORT=8082
+
+# add user
+USERNAME=username
+PASSWORD=password
+curl -XPUT "${AUTH_SERVER_IP}:${AUTH_SERVER_PORT}/user" -H "Content-Type: application/json" -d "{\"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\"}"
+
+# remove user
+curl -XDELETE "${AUTH_SERVER_IP}:${AUTH_SERVER_PORT}/user/${USERNAME}"
+```
