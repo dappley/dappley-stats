@@ -1,6 +1,8 @@
 # dappley-stats
 This is a visual interface for monitoring a dappley node's running status.
 
+[![Build Status](https://travis-ci.com/dappley/dappley-stats.svg?branch=master)](https://travis-ci.com/dappley/dappley-stats)
+
 ## Dependencies
 - bash shell
 - docker
