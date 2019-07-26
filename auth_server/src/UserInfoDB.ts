@@ -40,9 +40,9 @@ export class UserInfoDB {
     }
 
     /**
-     * @returns Promise of null on successful initialization, otherwise an Error
+     * @returns Empty promise on successful initialization, otherwise rejects with an Error
      */
-    public init(): Promise<null | Error> {
+    public init(): Promise<void> {
         return new Promise(async (resolve: any, reject: any) => {
             await fse.ensureDir(path.dirname(this.databasePath));
             this.db = new SQLite.Database(this.databasePath || UserInfoDB.DB_PATH,
@@ -63,7 +63,7 @@ export class UserInfoDB {
                                 reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
                                 return;
                             }
-                            resolve(null);
+                            resolve();
                         });
                     } catch (err) {
                         logger.error(err);
@@ -75,9 +75,9 @@ export class UserInfoDB {
 
     /**
      *
-     * @returns Promise of null on successful insertion/replacement of the default user, otherwise an Error
+     * @returns Empty promise on successful insertion/replacement of the default user, otherwise rejects with an Error
      */
-    public createDefaultUser(): Promise<null | Error> {
+    public createDefaultUser(): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.db) {
                 reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
@@ -90,7 +90,7 @@ export class UserInfoDB {
                         reject(new Error("unable to create default user"));
                         return;
                     }
-                    resolve(null);
+                    resolve();
                 });
         });
     }
@@ -109,9 +109,9 @@ export class UserInfoDB {
      * @param username
      * @param password
      * @returns Promise of a boolean representing whether the user was successfully
-     *          added to database, otherwise an Error
+     *          added to database, otherwise rejects with an Error
      */
-    public addUser(username: string, password: string): Promise<boolean | Error> {
+    public addUser(username: string, password: string): Promise<boolean> {
         return new Promise((resolve: any, reject: any) => {
             if (username && password) {
                 if (!this.db) {
@@ -139,9 +139,9 @@ export class UserInfoDB {
      *
      * @param username
      * @returns Promise of a boolean representing whether the user was deleted
-     *          from the database, otherwise an Error
+     *          from the database, otherwise rejects with an Error
      */
-    public deleteUser(username: string): Promise<boolean | Error> {
+    public deleteUser(username: string): Promise<boolean> {
         return new Promise((resolve: any, reject: any) => {
            if (username) {
                if (!this.db) {
@@ -167,9 +167,9 @@ export class UserInfoDB {
      *
      * @param username
      * @param password
-     * @returns Promise of a JWT if the user credentials are valid, otherwise an Error
+     * @returns Promise of a JWT if the user credentials are valid, otherwise rejects with an Error
      */
-    public login(username: string, password: string): Promise<string | Error> {
+    public login(username: string, password: string): Promise<string> {
         return new Promise((resolve: any, reject: any) => {
             if (username && password) {
                 if (!this.db) {

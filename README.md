@@ -79,7 +79,8 @@ docker-compose up
 # ie. docker exec -it auth-server bash
 
 # add user
-node scripts/AddOrRemoveUser add <username> <password>
+read -s PASSWORD
+node scripts/AddOrRemoveUser add <username> ${PASSWORD}
 
 # remove user
 node scripts/AddOrRemoveUser remove <username>

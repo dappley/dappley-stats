@@ -4,7 +4,7 @@ describe("SqliteUserInfoDB Test Suite", () => {
     const db = new UserInfoDB(":memory:");
     beforeAll(async () => {
         try {
-            expect(await db.init()).toBeNull();
+            await db.init();
         } catch (e) {
             fail(e);
         }
