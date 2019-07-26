@@ -72,3 +72,16 @@ yarn run test
 yarn run docker-build
 docker-compose up
 ```
+
+### Authorize additional users
+```bash
+# From auth-server
+# ie. docker exec -it auth-server bash
+
+# add user
+read -s PASSWORD
+node scripts/AddOrRemoveUser add <username> ${PASSWORD}
+
+# remove user
+node scripts/AddOrRemoveUser remove <username>
+```
