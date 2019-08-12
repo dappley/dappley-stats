@@ -67,9 +67,11 @@
                 customOptions: {
                     scales: {
                         yAxes: [{
-                            type: "logarithmic",
                             scaleLabel: {
                                 labelString: "Bytes"
+                            },
+                            ticks: {
+                                callback: (v) => {return Number(v).toExponential(3)},
                             }
                         }]
                     },

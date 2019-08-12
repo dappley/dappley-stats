@@ -50,6 +50,9 @@
                         yAxes: [{
                             scaleLabel: {
                                 labelString: "Number of Transactions"
+                            },
+                            ticks: {
+                                callback: (v) => {return v % 1 === 0 ? v : undefined}
                             }
                         }]
                     }
