@@ -8,7 +8,12 @@
         "no-bitwise": false,
         "only-arrow-functions": false,
         "member-ordering": false,
-        "interface-over-type-literal": false
+        "interface-over-type-literal": false,
+        "variable-name": {
+            "options": [
+                "allow-leading-underscore"
+            ]
+        }
     },
     "rulesDirectory": [
 

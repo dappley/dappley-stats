@@ -32,6 +32,15 @@ api.use(jwt({
     ],
 }));
 
+api.use(function(err: any, _req: Request, res: Response, next: NextFunction) {
+    if (err instanceof jwt.UnauthorizedError) {
+        logger.debug(err);
+        res.status(httpStatus.UNAUTHORIZED).end();
+    } else {
+        next(err);
+    }
+});
+
 /* POST /login endpoint returns an access and a refresh JWT token on successful login */
 api.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     let username;
