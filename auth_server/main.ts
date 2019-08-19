@@ -5,6 +5,7 @@ import express from "express";
 import jwt from "express-jwt";
 import httpStatus from "http-status-codes";
 import {environment, port, secret} from "./config.json";
+import JWTToken, {TokenResponse} from "./src/JWTToken";
 import logger from "./src/Logger";
 import {UserInfoDB} from "./src/UserInfoDB";
 
@@ -24,21 +25,40 @@ api.use(jwt({
             methods: ["POST"],
             url: "/login",
         },
+        {
+            methods: ["POST"],
+            url: "/refresh",
+        },
     ],
 }));
 
-/* POST /login endpoint returns a JWT token on request */
+/* POST /login endpoint returns an access and a refresh JWT token on successful login */
 api.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     let username;
     try {
         username = req.body.username;
         const {password} = req.body;
-        const jwtToken = await UserInfoDB.getInstance().login(username, password);
-        res.status(httpStatus.OK).json({tkn: jwtToken});
-        logger.debug("logged in user", {username, tkn: jwtToken});
+        const tokens: TokenResponse = await UserInfoDB.getInstance().login(username, password);
+        res.status(httpStatus.OK).json({tkn: tokens.accessTkn, refreshTkn: tokens.refreshTkn});
+        logger.debug("logged in user", {username, tkn: tokens.accessTkn, refreshTkn: tokens.refreshTkn});
     } catch (e) {
         res.status(httpStatus.BAD_REQUEST).end();
         logger.error((e as Error).message, {username});
+    } finally {
+        next();
+    }
+});
+
+/* POST /refresh endpoint returns an access and a refresh JWT token iff the query parameter tkn
+   is a valid refresh token supplied by this server; the refresh token is updated only if it will expire soon as
+   determined by UserInfoDB.refresh */
+api.post("/refresh", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const tokens: TokenResponse = await JWTToken.refresh(req.query.tkn);
+        res.status(httpStatus.OK).json({tkn: tokens.accessTkn, refreshTkn: tokens.refreshTkn});
+    } catch (e) {
+        res.status(httpStatus.BAD_REQUEST).end();
+        logger.error("unable to perform refresh request", e);
     } finally {
         next();
     }

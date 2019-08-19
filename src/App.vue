@@ -93,6 +93,7 @@
         },
         methods: {
             startPolling() {
+                clearInterval(this.polling);
                 this.getStats();
                 this.polling = setInterval(() => {
                     this.getStats();
@@ -117,6 +118,7 @@
                 }).then((res) => {
                     this.passwordState = this.authenticated = true;
                     sessionStorage.setItem("tkn", res.data.tkn);
+                    sessionStorage.setItem("refreshTkn", res.data.refreshTkn);
                     this.$nextTick(() => {
                         this.$refs.loginModal.hide();
                         this.startPolling();
@@ -137,7 +139,6 @@
                 this.$refs.loginModal.show();
             } else {
                 this.authenticated = true;
-                clearInterval(this.polling);
                 this.startPolling();
             }
         }

@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+: '
+    Generates a client side javascript library for communicating with a dappley nodes gRPC services
+'
+
 # dependencies: protoc, protoc-gen-grpc-web
 # usage: ./scripts/generate-proto-lib.sh <branch>
 

@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest dist",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit",
+    "test": "vue-cli-service test:unit --silent --verbose",
     "docker-build": "yarn build && docker-compose build",
     "postlint": "cd auth_server; yarn lint",
     "postinstall": "cd auth_server; yarn install",
