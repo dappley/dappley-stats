@@ -41,7 +41,8 @@
                                     labelString: "Number of Transactions"
                                 },
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    callback: (v) => {return v % 1 === 0 ? v : undefined}
                                 }
                             }
                         ],

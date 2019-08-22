@@ -60,6 +60,13 @@
                 customOptions: {
                     legend: {
                         display: true
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: (v) => {return v % 1 === 0 ? v : undefined}
+                            }
+                        }]
                     }
                 }
             };
