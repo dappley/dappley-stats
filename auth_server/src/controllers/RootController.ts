@@ -6,7 +6,7 @@ import HttpStatus from "http-status-codes";
 import { BadRequest } from "ts-httpexceptions";
 import JWTToken, { TokenResponse } from "../JWTToken";
 import logger from "../Logger";
-import JWTMiddleWare from "../middleware/JWTMiddleware";
+import JWT from "../middleware/JWT";
 import LoginRequest from "../models/LoginRequest";
 import { UserInfoDB } from "../UserInfoDB";
 
@@ -24,9 +24,7 @@ export default class RootController {
     @AcceptMime("application/json")
     @Status(HttpStatus.OK)
     @ContentType("application/json")
-    public async login(
-        @Required() @BodyParams() req: LoginRequest,
-    ): Promise<TokenResponse> {
+    public async login(@Required() @BodyParams(LoginRequest) req: LoginRequest): Promise<TokenResponse> {
         try {
             return await UserInfoDB.getInstance().login(req.username, req.password);
         } catch (e) {
@@ -59,7 +57,7 @@ export default class RootController {
      * relay grpc-web POST requests after JWT authentication
      */
     @Post(/\/rpcpb.MetricService\/.*/)
-    @UseAuth(JWTMiddleWare)
+    @UseAuth(JWT)
     @Status(HttpStatus.OK)
     @Header("Connection", "close")
     // tslint:disable-next-line: no-empty

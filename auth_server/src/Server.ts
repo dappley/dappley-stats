@@ -5,8 +5,10 @@ import cors from "cors";
 import { Config } from "./Config";
 import RootController from "./controllers/RootController";
 import logger from "./Logger";
+import "./middleware/GlobalErrorHandler";
 
 @ServerSettings({
+    ajv: {},
     httpPort: Config().PORT,
     logger: {
         /* log all requests only in debug mode */

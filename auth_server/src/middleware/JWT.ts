@@ -4,7 +4,7 @@ import jwt from "express-jwt";
 import { Config } from "../Config";
 
 @Middleware()
-export default class JWTMiddleWare implements IMiddleware {
+export default class JWT implements IMiddleware {
     private static REQUEST_HANDLER: Express.RequestHandler = jwt(
         {
             secret: Buffer.from(Config().SECRET, "base64"),
@@ -13,6 +13,6 @@ export default class JWTMiddleWare implements IMiddleware {
         @Request() req: Express.Request,
         @Response() res: Express.Response,
         @Next() next: Express.NextFunction) {
-        JWTMiddleWare.REQUEST_HANDLER(req, res, next);
+        JWT.REQUEST_HANDLER(req, res, next);
     }
 }
