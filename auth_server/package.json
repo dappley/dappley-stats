@@ -45,7 +45,7 @@
     "start-compiler": "tsc -w",
     "start-dev": "tsc && pm2 start --name auth-server --watch --no-daemon main.js",
     "test": "jest --silent --verbose",
-    "lint": "tslint --project .",
+    "lint": "tslint '**/*.ts' -c tslint.json",
     "start": "pm2 start --name auth-server --log auth-server.log main.js && tail -f auth-server.log",
     "stop": "pm2 delete auth-server",
     "restart": "yarn stop; yarn start"
