@@ -2,7 +2,7 @@ import "@tsed/ajv";
 import { ServerLoader, ServerSettings } from "@tsed/common";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { Config } from "./Config";
+import { Config, LogLevel } from "./Config";
 import RootController from "./controllers/RootController";
 import logger from "./Logger";
 import "./middleware/GlobalErrorHandler";
@@ -12,7 +12,8 @@ import "./middleware/GlobalErrorHandler";
     httpPort: Config().PORT,
     logger: {
         /* log all requests only in debug mode */
-        level: Config().LOG_LEVEL === "debug" ? "debug" : "off" as any,
+        level: Config().LOG_LEVEL === LogLevel.DEBUG ?
+            LogLevel.DEBUG : "off" as any,
     },
     mount: {
         "/": RootController,
