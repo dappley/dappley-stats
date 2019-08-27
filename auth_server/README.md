@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-- nodejs, npm or yarn
+- nodejs, yarn
 
 ## Setup
 ```bash
