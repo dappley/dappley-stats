@@ -48,8 +48,8 @@ api.post("/login", async (req: Request, res: Response, next: NextFunction) => {
         username = req.body.username;
         const {password} = req.body;
         const tokens: TokenResponse = await UserInfoDB.getInstance().login(username, password);
-        res.status(httpStatus.OK).json({tkn: tokens.accessTkn, refreshTkn: tokens.refreshTkn});
-        logger.debug("logged in user", {username, tkn: tokens.accessTkn, refreshTkn: tokens.refreshTkn});
+        res.status(httpStatus.OK).json(tokens);
+        logger.debug("logged in user", {username, tokens});
     } catch (e) {
         res.status(httpStatus.BAD_REQUEST).end();
         logger.error((e as Error).message, {username});
@@ -64,7 +64,7 @@ api.post("/login", async (req: Request, res: Response, next: NextFunction) => {
 api.post("/refresh", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const tokens: TokenResponse = await JWTToken.refresh(req.query.tkn);
-        res.status(httpStatus.OK).json({tkn: tokens.accessTkn, refreshTkn: tokens.refreshTkn});
+        res.status(httpStatus.OK).json(tokens);
     } catch (e) {
         res.status(httpStatus.BAD_REQUEST).end();
         logger.error("unable to perform refresh request", e);

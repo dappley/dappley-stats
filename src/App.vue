@@ -58,13 +58,14 @@
     import Peers from "./components/Peers";
     import ForkInfo from "./components/ForkInfo";
     import BlockStats from "./components/BlockStats";
-    import {MetricsServiceClient} from "./js/MetricsServiceClient";
+    import MetricServiceClient from "./js/MetricServiceClient";
     import NodeConfig from "./components/NodeConfig";
+    import Store from "./js/State";
     import {BCard, BCardText, BModal, BFormInput, BFormGroup, BSpinner} from "bootstrap-vue";
-    import axios from "axios";
 
     export default {
         name: "App",
+        store: Store,
         components: {
             BlockStats,
             ForkInfo,
@@ -84,12 +85,25 @@
             return {
                 stats: null,
                 lastResponseTime: null,
-                authenticated: false,
                 passwordState: null,
                 password: "",
                 username: "",
-                polling: null
+                polling: null,
             };
+        },
+        computed: {
+            authenticated() {
+                return this.$store.state.authenticated;
+            },
+        },
+        watch: {
+            authenticated: function(val) {
+                if (!val) {
+                    clearInterval(this.polling);
+                    this.$refs.loginModal.show();
+                    this.passwordState = null;
+                }
+            }
         },
         methods: {
             startPolling() {
@@ -99,35 +113,34 @@
                     this.getStats();
                 }, config.pollingInterval);
             },
-            getStats() {
-                MetricsServiceClient.getStats()
-                    .then(res => {
-                        this.stats = res.getStats();
-                        this.lastResponseTime = new Date();
-                    })
-                    .catch(err => {
-                        // eslint-disable-next-line
-                        console.error(err);
-                    });
+            async getStats() {
+                try {
+                    const res = await MetricServiceClient.getStats();
+                    this.stats = res.getStats();
+                    this.lastResponseTime = new Date();
+                } catch (err) {
+                    // eslint-disable-next-line
+                    console.error(err);
+                }
             },
-            attemptLogin(loginModal) {
+            async attemptLogin(loginModal) {
                 loginModal.preventDefault(); /* prevent closing of login modal */
-                axios.post("/login", {username: this.username, password: this.password}, {
-                    baseURL: `http://${config.authServerHost}:${config.authServerPort}`,
-                    headers: {"Content-Type": "application/json"}
-                }).then((res) => {
-                    this.passwordState = this.authenticated = true;
-                    sessionStorage.setItem("tkn", res.data.tkn);
-                    sessionStorage.setItem("refreshTkn", res.data.refreshTkn);
+                try {
+                    await this.$store.dispatch({
+                        type: "login",
+                        username: this.username,
+                        password: this.password});
+                    this.passwordState = true;
                     this.$nextTick(() => {
                         this.$refs.loginModal.hide();
                         this.startPolling();
                     });
-                }).catch((err) => {
+                } catch (err) {
+                    // eslint-disable-next-line
                     console.error(err);
-                    this.passwordState = this.authenticated = false;
+                    this.passwordState = false;
                     this.password = "";
-                });
+                }
             },
             updatePasswordState() {
                 if (this.password.length > 0)
@@ -135,10 +148,9 @@
             }
         },
         mounted() {
-            if (!sessionStorage.getItem("tkn")) {
+            if (!this.authenticated) {
                 this.$refs.loginModal.show();
             } else {
-                this.authenticated = true;
                 this.startPolling();
             }
         }

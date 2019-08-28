@@ -35,7 +35,7 @@
 
 <script>
     import {BButton, BModal, BFormGroup, BFormInput, BToast} from "bootstrap-vue";
-    import {MetricsServiceClient, SetNodeConfigRequest} from "../js/MetricsServiceClient";
+    import MetricServiceClient, {SetNodeConfigRequest} from "../js/MetricServiceClient";
     import _ from "lodash";
 
     const ConfigType = SetNodeConfigRequest.ConfigType;
@@ -72,7 +72,7 @@
         },
         methods: {
             getNodeConfig() {
-                MetricsServiceClient.getNodeConfig()
+                MetricServiceClient.getNodeConfig()
                     .then(res => {
                         this.config = res;
                         this.model = _.cloneDeep(this.config.toObject());
@@ -96,7 +96,7 @@
             handleApply() {
                 const req = this.makeSetNodeConfigRequest();
                 if (req.getUpdatedConfigsList().length > 0) {
-                    MetricsServiceClient.setNodeConfig(req)
+                    MetricServiceClient.setNodeConfig(req)
                         .then(() => {
                             this.toasterProps = {title: "Successfully updated node configuration.", variant: "info", message: null};
                             this.$refs.setNodeConfigToast.show();

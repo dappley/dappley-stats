@@ -1,6 +1,6 @@
 import {mount} from "@vue/test-utils";
 import NodeConfig from "../../../src/components/NodeConfig.vue";
-import {SetNodeConfigRequest} from "../../../src/js/MetricsServiceClient";
+import {SetNodeConfigRequest} from "../../../src/js/MetricServiceClient";
 
 const ConfigType = SetNodeConfigRequest.ConfigType;
 
