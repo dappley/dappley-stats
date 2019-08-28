@@ -60,7 +60,7 @@
     import BlockStats from "./components/BlockStats";
     import MetricServiceClient from "./js/MetricServiceClient";
     import NodeConfig from "./components/NodeConfig";
-    import Store from "./js/State";
+    import Store, { ACTIONS } from "./js/State";
     import {BCard, BCardText, BModal, BFormInput, BFormGroup, BSpinner} from "bootstrap-vue";
 
     export default {
@@ -127,7 +127,7 @@
                 loginModal.preventDefault(); /* prevent closing of login modal */
                 try {
                     await this.$store.dispatch({
-                        type: "login",
+                        type: ACTIONS.LOGIN,
                         username: this.username,
                         password: this.password});
                     this.passwordState = true;

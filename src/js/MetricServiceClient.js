@@ -1,4 +1,4 @@
-import State from "./State";
+import State, { ACTIONS } from "./State";
 import config from "../../config.json";
 import {MetricServicePromiseClient} from "./github.com/dappley/go-dappley/rpc/pb/rpc_grpc_web_pb";
 import {MetricsServiceRequest} from "./github.com/dappley/go-dappley/rpc/pb/rpc_pb";
@@ -21,7 +21,7 @@ class MetricServiceClient {
             return await this.client[func](request, MetricServiceClient.getMetadata());
         } catch (e) {
             if (e.code === this.GRPC_STATUS_UNAUTHENTICATED) {
-                await State.dispatch({type: "refreshTokens"});
+                await State.dispatch({type: ACTIONS.REFRESH_TOKENS});
                 return await this.client[func](request, MetricServiceClient.getMetadata());
             } else {
                 throw e;
