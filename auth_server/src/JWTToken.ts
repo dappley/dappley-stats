@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { secret } from "../config.json";
+import { Config } from "./Config";
 import logger from "./Logger";
 import { UserInfoDB } from "./UserInfoDB";
 
@@ -22,8 +22,8 @@ type DecodedPayload = JWTPayload & {
 };
 
 export enum Token {
-    ACCESS,
-    REFRESH,
+    ACCESS = "access",
+    REFRESH = "refresh",
 }
 
 type JWTPayload = {
@@ -46,10 +46,10 @@ export default class JWTToken {
      * @static
      * @param payload the payload to be hashed into the JWT token
      * @param expiresIn
-     * @returns returns a new jwt token with the specified payload and expiration date
+     * @returns a new jwt token with the specified payload and expiration date
      */
     public static newTkn(payload: JWTPayload, expiresIn: string | number): string {
-        return jwt.sign(payload, Buffer.from(secret, "base64"), { expiresIn });
+        return jwt.sign(payload, Buffer.from(Config().SECRET, "base64"), { expiresIn });
     }
 
     /**
@@ -71,7 +71,7 @@ export default class JWTToken {
      */
     public static _refresh(token: string, database: UserInfoDB): Promise<TokenResponse> {
         return new Promise<TokenResponse>((resolve: any, reject: any) => {
-            jwt.verify(token, Buffer.from(secret, "base64"),
+            jwt.verify(token, Buffer.from(Config().SECRET, "base64"),
                 { ignoreExpiration: false }, function(err: jwt.VerifyErrors, decodedPayload: object | string) {
                     if (err) {
                         /* verifies token was signed by this server and the token has not expired */
