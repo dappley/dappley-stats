@@ -38,7 +38,8 @@
   "devDependencies": {
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.18.0"
+    "tslint": "^5.18.0",
+    "typedoc": "^0.15.0"
   },
   "scripts": {
     "compile": "tsc",
@@ -48,7 +49,9 @@
     "lint": "tslint '**/*.ts' -c tslint.json",
     "start": "pm2 start --name auth-server --log auth-server.log main.js && tail -f auth-server.log",
     "stop": "pm2 delete auth-server",
-    "restart": "yarn stop; yarn start"
+    "restart": "yarn stop; yarn start",
+    "docgen": "typedoc --mode modules --hideGenerator --excludeExternals --externalPattern '**/node_modules/**' --out docs/public",
+    "docserver": "node docs/server"
   },
   "jest": {
     "transform": {

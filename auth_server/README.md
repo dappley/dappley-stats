@@ -41,3 +41,14 @@ LOG_LEVEL=info             // one of: 'log':0, 'trace':1, 'debug':2, 'info':3, '
 DEFAULT_USERNAME=admin     // any string with length > 0
 DEFAULT_PASSWORD=password  // any string with length > 0
 ```
+
+## Documentation
+
+```bash
+
+  # generate documentation
+  yarn docgen
+
+  # launch documentation server at http://localhost:9000/docs
+  yarn docserver # or yarn docserver <port>
+```
