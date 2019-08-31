@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-- nodejs, npm or yarn
+- nodejs, yarn
 
 ## Setup
 ```bash
@@ -33,13 +33,22 @@ yarn run test
 ```
 
 ```
-// Default Configuration:
-{
-    "secret"           : "",                   // base64 encoded secret (ie.  echo "myawesomesecret" | base64)
-    "port"             : 8082,                 // api port #
-    "environment"      : "production",         // one of: "production", "development"
-    "logLevel"         : "info"                // one of: 'log':0, 'trace':1, 'debug':2, 'info':3, 'warn':4, 'error':5, 'fatal':6; https://www.npmjs.com/package/tracer#customize-output-format
-    "defaultUser"      : "admin",
-    "defaultPassword"  : ""
-}
+// Default Configuration (default.env):
+SECRET=                    // base64 encoded secret (ie.  echo "myawesomesecret" | base64)
+PORT=8082                  // api port #
+NODE_ENV=production        // one of: "production", "development"
+LOG_LEVEL=info             // one of: 'log':0, 'trace':1, 'debug':2, 'info':3, 'warn':4, 'error':5, 'fatal':6; https://www.npmjs.com/package/tracer#customize-output-format
+DEFAULT_USERNAME=admin     // any string with length > 0
+DEFAULT_PASSWORD=password  // any string with length > 0
+```
+
+## Documentation
+
+```bash
+
+  # generate documentation
+  yarn docgen
+
+  # launch documentation server at http://localhost:9000/docs
+  yarn docserver # or yarn docserver <port>
 ```

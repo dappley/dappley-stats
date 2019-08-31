@@ -7,3 +7,5 @@ node_modules/
 *.js.map
 *.log
 db
+
+default.env

@@ -1,9 +1,9 @@
 import tracer from "tracer";
-import {logLevel} from "../config.json";
+import { Config } from "./Config";
 
 const logger = tracer.colorConsole({
     format : "{{timestamp}} [{{file}}:{{line}}] [{{title}}]: {{message}}",
-    level: logLevel,
+    level: Config().LOG_LEVEL,
 });
 
 export default logger;

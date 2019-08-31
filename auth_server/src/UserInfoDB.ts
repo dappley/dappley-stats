@@ -4,7 +4,7 @@ import fse from "fs-extra";
 import path from "path";
 import SQLite, {Database, RunResult, Statement} from "sqlite3";
 import util from "util";
-import {defaultPassword, defaultUsername} from "../config.json";
+import {Config} from "./Config";
 import JWTToken, {Token, TokenResponse} from "./JWTToken";
 import logger from "./Logger";
 
@@ -84,9 +84,11 @@ export class UserInfoDB {
                 return;
             }
             this.db!.run("REPLACE INTO user_info VALUES (?, ?)",
-                [defaultUsername, UserInfoDB.hashPassword(defaultPassword)], function(this: RunResult, err: Error) {
+                [Config().DEFAULT_USERNAME, UserInfoDB.hashPassword(Config().DEFAULT_PASSWORD)],
+                function(this: RunResult, err: Error) {
                     if (err) {
-                        logger.error("unable to create default user", {defaultUsername, err});
+                        logger.error("unable to create default user",
+                            {username: Config().DEFAULT_USERNAME, err});
                         reject(new Error("unable to create default user"));
                         return;
                     }

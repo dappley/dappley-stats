@@ -7,7 +7,7 @@ This is a visual interface for monitoring a dappley node's running status.
 - bash shell
 - docker
 - docker-compose
-- node, npm or yarn
+- node, yarn
 
 ## Project setup
 ```

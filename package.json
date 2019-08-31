@@ -8,9 +8,9 @@
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit --silent --verbose",
     "docker-build": "yarn build && docker-compose build",
-    "postlint": "cd auth_server; yarn lint",
-    "postinstall": "cd auth_server; yarn install",
-    "posttest": "cd auth_server; yarn test"
+    "postlint": "yarn --cwd auth_server lint",
+    "postinstall": "yarn --cwd auth_server install",
+    "posttest": "yarn --cwd auth_server test"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",
