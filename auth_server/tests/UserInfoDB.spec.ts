@@ -2,9 +2,13 @@ import {UserInfoDB} from "../src/UserInfoDB";
 
 describe("SqliteUserInfoDB Test Suite", () => {
     const db = new UserInfoDB(":memory:");
+    const testUsername = "test-user";
+    const testPassword = "password";
+
     beforeAll(async () => {
         try {
             await db.init();
+            expect(await db.addUser(testUsername, testPassword)).toBe(true);
         } catch (e) {
             fail(e);
         }
@@ -128,5 +132,19 @@ describe("SqliteUserInfoDB Test Suite", () => {
         } catch (e) {
             expect(e).toBe(UserInfoDB.INVALID_ARGUMENTS_ERROR);
         }
+    });
+
+    test("Should be able to determine if user exists", async () => {
+       try {
+           expect(await db.hasUser(testUsername)).toBeUndefined();
+           try {
+               await db.hasUser("user-that-doesn't-exist");
+               fail("Found a user that was not added!");
+           } catch (e) {
+               expect(e).toBeInstanceOf(Error);
+           }
+       } catch (e) {
+           fail(e);
+       }
     });
 });

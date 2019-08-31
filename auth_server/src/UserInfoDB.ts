@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
 import fs from "fs";
 import fse from "fs-extra";
-import jwt from "jsonwebtoken";
 import path from "path";
 import SQLite, {Database, RunResult, Statement} from "sqlite3";
 import util from "util";
-import {defaultPassword, defaultUsername, secret} from "../config.json";
+import {defaultPassword, defaultUsername} from "../config.json";
+import JWTToken, {Token, TokenResponse} from "./JWTToken";
 import logger from "./Logger";
 
 const readFile = util.promisify(fs.readFile);
@@ -24,7 +24,7 @@ export class UserInfoDB {
     /**
      * @returns the global instance of UserInfoDB
      */
-    public static getInstance() {
+    public static getInstance(): UserInfoDB {
         if (!this.instance) {
             this.instance = new UserInfoDB(UserInfoDB.DB_PATH);
         }
@@ -169,7 +169,7 @@ export class UserInfoDB {
      * @param password
      * @returns Promise of a JWT if the user credentials are valid, otherwise rejects with an Error
      */
-    public login(username: string, password: string): Promise<string> {
+    public login(username: string, password: string): Promise<TokenResponse> {
         return new Promise((resolve: any, reject: any) => {
             if (username && password) {
                 if (!this.db) {
@@ -187,16 +187,48 @@ export class UserInfoDB {
 
                         if (row) {
                             if (bcrypt.compareSync(password, row.password)) {
-                                const token = jwt.sign(
-                                    {
-                                        user: username,
-                                    },
-                                    Buffer.from(secret, "base64"),
-                                    {});
-                                resolve(token);
+                                resolve({
+                                    accessTkn: JWTToken.newTkn({
+                                        tokenType: Token.ACCESS, username,
+                                    }, JWTToken.ACCESS_TOKEN_LIFESPAN),
+                                    refreshTkn: JWTToken.newTkn({
+                                        tokenType: Token.REFRESH, username,
+                                    }, JWTToken.REFRESH_TOKEN_LIFESPAN),
+                                });
                             } else {
                                 reject(new Error("incorrect password"));
                             }
+                        } else {
+                            reject(new Error(`user '${username}' does not exist`));
+                        }
+                    });
+            } else {
+                reject(UserInfoDB.INVALID_ARGUMENTS_ERROR);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param username
+     * @returns a Promise of Void if the user exists otherwise rejects with an Error
+     */
+    public hasUser(username: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (username) {
+                if (!this.db) {
+                    reject(UserInfoDB.UNINITIALIZED_DATABASE_ERROR);
+                    return;
+                }
+                this.db!.get("SELECT * FROM user_info WHERE username = ?", [username],
+                    function(this: Statement, err: Error | null, row: any) {
+                        if (err) {
+                            logger.error(err);
+                            reject(err);
+                            return;
+                        }
+                        if (row) {
+                            resolve();
                         } else {
                             reject(new Error(`user '${username}' does not exist`));
                         }

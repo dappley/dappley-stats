@@ -1,6 +1,8 @@
 FROM node:12.6.0
 
-RUN npm -g install yarn
+RUN npm -g install yarn pm2
+RUN pm2 install pm2-logrotate \
+    && pm2 set pm2-logrotate:retain 5
 
 COPY auth_server /auth_server
 WORKDIR /auth_server
