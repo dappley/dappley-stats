@@ -23,7 +23,7 @@
     "google-protobuf": "^3.8.0",
     "grpc-web": "^1.0.4",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "popper.js": "^1.15.0",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
