@@ -6,7 +6,7 @@
   "dependencies": {
     "@tsed/ajv": "^5.27.3",
     "@tsed/common": "^5.27.3",
-    "@tsed/core": "^5.27.3",
+    "@tsed/core": "^5.65.7",
     "@tsed/di": "^5.27.3",
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.5",
